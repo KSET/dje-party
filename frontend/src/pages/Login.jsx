@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -7,14 +6,19 @@ export default function Login({ onLogin }) {
   const [password, setPassword] = useState('');
 
   const login = async () => {
-    if (username === 'display') return onLogin('display', 'display');
+    if (username === 'display')
+      return onLogin('display', 'display');
     try {
-      const res = await axios.post('http://localhost:3001/login', { username, password });
+      console.log("ide post u login")
+      const res = await axios.post('http://localhost:3001/login', 
+        { username, password }, 
+        { withCredentials: true } // Include credentials in the request
+      );
       if (res.data.success) {
         onLogin(res.data.role, username);
       }
     } catch (err) {
-      alert('Login failed');
+      alert(err);
     }
   };
 

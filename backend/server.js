@@ -3,6 +3,9 @@ const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const bodyParser = require('body-parser');
+const fs = require("fs");
+const csv = require("csv-parser");
+const session = require('express-session');
 
 const app = express();
 const server = http.createServer(app);
@@ -10,20 +13,56 @@ const io = new Server(server, {
   cors: { origin: 'http://localhost:5173', methods: ['GET', 'POST'] }
 });
 
-app.use(cors());
+// Load users from CSV
+function loadUsersFromCSV(filePath) {
+  const loadedUsers = {};
+  fs.createReadStream(filePath)
+    .pipe(csv())
+    .on('data', (row) => {
+      loadedUsers[row.username] = { password: row.password, role: row.role };
+    })
+    .on('end', () => {
+      console.log('Users loaded from CSV');
+    });
+  return loadedUsers;
+}
+
+// Initialize users from CSV
+let users = loadUsersFromCSV('./users.csv');
+
+app.use(cors({
+  origin: 'http://localhost:5173', // Adjust this to match your frontend's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust allowed methods as needed
+  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}));
+
 app.use(bodyParser.json());
 
-let users = {
-  admin: { password: 'adminpass', role: 'admin' },
-};
 let approvedMessages = [];
 let globalAllowed = true;
+
+
+app.use(session({
+  secret: 'djeparty',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   const user = users[username];
   if (user && user.password === password) {
+    req.session.user = { username, role: user.role };
     res.json({ success: true, role: user.role });
+  } else {
+    res.status(401).json({ success: false });
+  }
+});
+
+app.get('/session', (req, res) => {
+  if (req.session.user) {
+    res.json(req.session.user);
   } else {
     res.status(401).json({ success: false });
   }

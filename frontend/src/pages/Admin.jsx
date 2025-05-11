@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import axios from 'axios';
 
 const socket = io('http://localhost:3001');
 
@@ -8,8 +7,6 @@ export default function Admin() {
   const [messages, setMessages] = useState([]);
   const [incoming, setIncoming] = useState([]);
   const [globalAllowed, setGlobalAllowed] = useState(true);
-  const [newUser, setNewUser] = useState('');
-  const [newPass, setNewPass] = useState('');
 
   useEffect(() => {
     socket.emit('admin_join');
@@ -47,25 +44,10 @@ export default function Admin() {
     socket.emit('set_global_permission', true);
   };
 
-  const addUser = async () => {
-    await axios.post('http://localhost:3001/add-user', {
-      adminUser: 'admin',
-      adminPass: 'adminpass',
-      newUser,
-      newPass
-    });
-    setNewUser('');
-    setNewPass('');
-  };
 
   return (
     <div>
       <h2>Admin Panel</h2>
-
-      <h3>Add User</h3>
-      <input placeholder="Username" value={newUser} onChange={e => setNewUser(e.target.value)} />
-      <input placeholder="Password" value={newPass} onChange={e => setNewPass(e.target.value)} />
-      <button onClick={addUser}>Add User</button>
 
       <h3>Incoming Messages</h3>
       {incoming.map((m, i) => (
