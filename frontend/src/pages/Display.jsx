@@ -7,7 +7,20 @@ const socket = io("http://localhost:3001");
 export default function Display() {
   const [popupData, setPopupData] = useState(null);
   const [questions, setQuestions] = useState([]);
-  const [groupedQuestions, setGroupedQuestions] = useState({});
+  // const [groupedQuestions, setGroupedQuestions] = useState({});
+
+    useEffect(() => {
+      // Fetch questions from the backend API
+      fetch("http://localhost:3001/api/questions")
+        .then((response) => response.json())
+        .then((data) => setQuestions(data))
+        .catch((error) => console.error("Error fetching questions:", error));
+    }, []);
+
+      const categories = [...new Set(questions.map((q) => q.category))];
+  const groupedQuestions = categories.map((category) =>
+    questions.filter((q) => q.category === category)
+  );
 
   useEffect(() => {
     socket.emit("display_join"); // Tell the server this is a "display" client
