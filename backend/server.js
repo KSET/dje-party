@@ -136,6 +136,11 @@ io.on('connection', (socket) => {
     socket.join('display');
     approvedMessages.forEach((m) => socket.emit('display_message', m));
   });
+
+  socket.on('admin_show_question', (question) => {
+    console.log('Broadcasting question to display:', question);
+    io.to('display').emit('display_question', question);
+  });
 });
 
 server.listen(3001, () => {

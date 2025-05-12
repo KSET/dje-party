@@ -16,9 +16,8 @@ export default function Admin() {
   }, []);
 
   const handleShowPopup = (question) => {
-    console.log("Sending question to display:", question); // Debugging log
     setPopupData(question);
-    socket.emit("admin_show_question", question); // Emit the question to the Display screen
+    socket.emit("admin_show_question", question);
   };
 
   const handleClosePopup = () => {

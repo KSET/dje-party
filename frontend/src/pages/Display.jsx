@@ -10,21 +10,21 @@ export default function Display() {
   const [groupedQuestions, setGroupedQuestions] = useState({});
 
   useEffect(() => {
-    // Function to handle the incoming question
+    socket.emit("display_join"); // Tell the server this is a "display" client
+  }, []);
+
+  useEffect(() => {
     const handleDisplayQuestion = (question) => {
-      console.log("Received question from admin:", question); // Debugging log
+      console.log("Received question from backend:", question); // Debugging log
       setPopupData(question); // Update popupData state
     };
 
-    // Listen for the "admin_show_question" event
-    socket.on("admin_show_question", handleDisplayQuestion);
-    console.log("a kao")
+    socket.on("display_question", handleDisplayQuestion);
 
-    // Cleanup listener on unmount or re-render
     return () => {
-      socket.off("admin_show_question", handleDisplayQuestion);
+      socket.off("display_question", handleDisplayQuestion); // Cleanup listener
     };
-  }, []); // No dependencies, runs on mount onlys
+  }, []);
 
   return (
     <div>
