@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-// import "Display.css"; // Assuming CSS for styling the grid
+import "./Display.css"; // Import the CSS file for styles
 
 const socket = io("http://localhost:3001");
 
 export default function Display() {
   const [popupData, setPopupData] = useState(null);
   const [questions, setQuestions] = useState([]);
-  // const [groupedQuestions, setGroupedQuestions] = useState({});
 
-    useEffect(() => {
-      // Fetch questions from the backend API
-      fetch("http://localhost:3001/api/questions")
-        .then((response) => response.json())
-        .then((data) => setQuestions(data))
-        .catch((error) => console.error("Error fetching questions:", error));
-    }, []);
+  useEffect(() => {
+    // Fetch questions from the backend API
+    fetch("http://localhost:3001/api/questions")
+      .then((response) => response.json())
+      .then((data) => setQuestions(data))
+      .catch((error) => console.error("Error fetching questions:", error));
+  }, []);
 
-      const categories = [...new Set(questions.map((q) => q.category))];
+  const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions = categories.map((category) =>
     questions.filter((q) => q.category === category)
   );
@@ -40,32 +39,28 @@ export default function Display() {
   }, []);
 
   return (
-    <div>
-      <h2>Display Screen</h2>
-
-      {/* Jeopardy Grid */}
+    <div className="display-container">
       <div className="jeopardy-grid">
-        {Object.entries(groupedQuestions).map(([category, questions]) => (
-          <div key={category} className="category-column">
-            <div className="category-header">{category}</div>
-            {questions.map((question, index) => (
-              <div key={index} className="prize-cell">
-                ${question.price}
+        {groupedQuestions.map((questions, categoryIndex) => (
+          <div key={categoryIndex} className="category-column">
+            <div className="category-header">{categories[categoryIndex]}</div>
+            {questions.map((q, questionIndex) => (
+              <div key={questionIndex} className="prize-cell">
+                ${q.price}
               </div>
             ))}
           </div>
         ))}
       </div>
 
-      {/* Popup for displaying selected question */}
-      {popupData ? (
-        <div className="popup">
-          <h3>{popupData.category}</h3>
-          <p>Prize: ${popupData.price}</p>
-          <p>{popupData.question}</p>
+      {popupData && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3 className="popup-category">{popupData.category}</h3>
+            <p className="popup-prize">Prize: ${popupData.price}</p>
+            <p className="popup-question">{popupData.question}</p>
+          </div>
         </div>
-      ) : (
-        <p>No question selected yet.</p>
       )}
     </div>
   );
