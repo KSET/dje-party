@@ -9,36 +9,22 @@ export default function Display() {
   const [questions, setQuestions] = useState([]);
   const [groupedQuestions, setGroupedQuestions] = useState({});
 
-  // Fetch questions from the backend
   useEffect(() => {
-    fetch("http://localhost:3001/api/questions")
-      .then((response) => response.json())
-      .then((data) => {
-        setQuestions(data);
-
-        // Group questions by category
-        const grouped = data.reduce((acc, question) => {
-          if (!acc[question.category]) acc[question.category] = [];
-          acc[question.category].push(question);
-          return acc;
-        }, {});
-
-        setGroupedQuestions(grouped);
-      })
-      .catch((error) => console.error("Error fetching questions:", error));
-  }, []);
-
-  useEffect(() => {
+    // Function to handle the incoming question
     const handleDisplayQuestion = (question) => {
-      setPopupData(question); // Update the popupData state when the event is received
+      console.log("Received question from admin:", question); // Debugging log
+      setPopupData(question); // Update popupData state
     };
 
+    // Listen for the "admin_show_question" event
     socket.on("admin_show_question", handleDisplayQuestion);
+    console.log("a kao")
 
+    // Cleanup listener on unmount or re-render
     return () => {
-      socket.off("admin_show_question", handleDisplayQuestion); // Cleanup listener
+      socket.off("admin_show_question", handleDisplayQuestion);
     };
-  }, []);
+  }, []); // No dependencies, runs on mount onlys
 
   return (
     <div>
