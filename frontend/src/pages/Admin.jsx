@@ -1,73 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import React, { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
-const socket = io('http://localhost:3001');
+const socket = io("http://localhost:3001");
 
 export default function Admin() {
-  const [messages, setMessages] = useState([]);
-  const [incoming, setIncoming] = useState([]);
-  const [globalAllowed, setGlobalAllowed] = useState(true);
+  const [questions, setQuestions] = useState([]);
+  const [popupData, setPopupData] = useState(null);
 
   useEffect(() => {
-    socket.emit('admin_join');
-
-    const handleNewMessage = (msg) => {
-      setIncoming(m => [...m, msg]);
-    };
-    const handleApproved = (msgs) => {
-      setMessages(msgs);
-    };
-    const handlePermission = (allowed) => {
-      setGlobalAllowed(allowed);
-    };
-
-    socket.on('new_message', handleNewMessage);
-    socket.on('approved_messages', handleApproved);
-    socket.on('global_allowed', handlePermission);
-
-    return () => {
-      socket.off('new_message', handleNewMessage);
-      socket.off('approved_messages', handleApproved);
-      socket.off('global_allowed', handlePermission);
-    };
+    // Fetch questions from the backend API
+    fetch("http://localhost:3001/api/questions")
+      .then((response) => response.json())
+      .then((data) => setQuestions(data))
+      .catch((error) => console.error("Error fetching questions:", error));
   }, []);
 
-  const approve = (msg) => {
-    socket.emit('approve_message', msg.username + ": " + msg.msg);
+  const handleShowPopup = (question) => {
+    setPopupData(question);
+    socket.emit("admin_show_question", question); // Emit the question to the Display screen
   };
 
-  const blockAll = () => {
-    socket.emit('set_global_permission', false);
+  const handleClosePopup = () => {
+    setPopupData(null); // Close the popup
   };
 
-  const unblockAll = () => {
-    socket.emit('set_global_permission', true);
-  };
-
+  // Group questions by category
+  const categories = [...new Set(questions.map((q) => q.category))];
+  const groupedQuestions = categories.map((category) =>
+    questions.filter((q) => q.category === category)
+  );
 
   return (
     <div>
       <h2>Admin Panel</h2>
+      <div className="grid">
+        {groupedQuestions.map((categoryQuestions, categoryIndex) => (
+          <div key={categoryIndex} className="category-column">
+            <h3>{categoryQuestions[0]?.category}</h3>
+            {categoryQuestions.map((q, questionIndex) => (
+              <div
+                key={questionIndex}
+                className="question-box"
+                onClick={() => handleShowPopup(q)}
+              >
+                <p>${q.price}</p>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
 
-      <h3>Incoming Messages</h3>
-      {incoming.map((m, i) => (
-        <div key={i}>
-          <b>{m.username}</b>: {m.msg}
-          <button onClick={() => approve(m)}>Show</button>
+      {popupData && (
+        <div className="popup">
+          <h3>{popupData.category}</h3>
+          <p>Prize: ${popupData.price}</p>
+          <p>{popupData.question}</p>
+          <button onClick={handleClosePopup}>Close</button>
         </div>
-      ))}
-
-      <h3>Approved Messages (on display)</h3>
-      {messages.map((m, i) => (
-        <div key={i}>{m}</div>
-      ))}
-
-      <h3>Global Permissions</h3>
-      <p>
-        All users are currently: <b>{globalAllowed ? "Allowed" : "Blocked"}</b>
-      </p>
-      <button onClick={blockAll}>Block All</button>
-      <button onClick={unblockAll}>Unblock All</button>
+      )}
     </div>
   );
 }

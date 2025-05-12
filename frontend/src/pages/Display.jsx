@@ -1,31 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import React, { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
-const socket = io('http://localhost:3001');
+const socket = io("http://localhost:3001");
 
 export default function Display() {
-  const [messages, setMessages] = useState([]);
+  const [popupData, setPopupData] = useState(null);
 
   useEffect(() => {
-    socket.emit('display_join');
-
-    const handleDisplayMessage = (msg) => {
-      setMessages((prev) => [...prev, msg]);
+    // Listen for the "admin_show_question" event
+    const handleDisplayQuestion = (question) => {
+      setPopupData(question); // Update the popupData state when the event is received
     };
 
-    socket.on('display_message', handleDisplayMessage);
+    socket.on("admin_show_question", handleDisplayQuestion);
 
     return () => {
-      socket.off('display_message', handleDisplayMessage);
+      socket.off("admin_show_question", handleDisplayQuestion); // Cleanup listener
     };
   }, []);
 
   return (
     <div>
       <h2>Display Screen</h2>
-      {messages.map((msg, i) => (
-        <div key={i}>{msg}</div>
-      ))}
+      {popupData ? (
+        <div className="popup">
+          <h3>{popupData.category}</h3>
+          <p>Prize: ${popupData.price}</p>
+          <p>{popupData.question}</p>
+        </div>
+      ) : (
+        <p>No question selected yet.</p>
+      )}
     </div>
   );
 }

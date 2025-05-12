@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const fs = require("fs");
 const csv = require("csv-parser");
 const session = require('express-session');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
@@ -41,6 +42,26 @@ app.use(bodyParser.json());
 let approvedMessages = [];
 let globalAllowed = true;
 
+
+const PORT = 3001;
+
+app.get("/api/questions", (req, res) => {
+  const filePath = path.join(__dirname, "questions.csv");
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: "Unable to read file" });
+    }
+    const rows = data.split("\n").slice(1); // Remove headers
+    const questions = rows
+      .filter((row) => row.trim() !== "") // Filter out empty rows
+      .map((row) => {
+        const [round, category, price, question, answer, double] =
+          row.split(",");
+        return { round, category, price, question, answer, double };
+      });
+    res.json(questions);
+  });
+});
 
 app.use(session({
   secret: 'djeparty',
