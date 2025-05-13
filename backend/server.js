@@ -107,8 +107,6 @@ app.post('/add-user', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('Socket connected:', socket.id);
-
   socket.on('login_user', (username) => {
     socket.username = username;
     socket.emit('permission_status', globalAllowed);
@@ -127,22 +125,10 @@ io.on('connection', (socket) => {
     socket.emit('global_allowed', globalAllowed);
   });
 
-  socket.on('approve_message', (msg) => {
-    approvedMessages.push(msg);
-    io.to('display').emit('display_message', msg);
-    io.to('admin').emit('approved_messages', approvedMessages);
-  });
-
   socket.on('set_global_permission', (allowed) => {
     globalAllowed = allowed;
     io.emit('permission_status', globalAllowed);
     io.to('admin').emit('global_allowed', globalAllowed);
-  });
-
-  socket.on('user_message', ({ username, msg }) => {
-    if (globalAllowed) {
-      io.to('admin').emit('new_message', { username, msg });
-    }
   });
 
   socket.on('display_join', () => {
