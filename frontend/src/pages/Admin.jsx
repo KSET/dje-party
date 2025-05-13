@@ -7,10 +7,18 @@ export default function Admin() {
   const [questions, setQuestions] = useState([]);
   const [popupData, setPopupData] = useState(null);
   const [userVotes, setUserVotes] = useState([]);
+  const [canSend, setCanSend] = useState(false);
+  const [hasRegisteredVotes, setHasRegisteredVotes] = useState(false);
 
   // Register to socket
   useEffect(() => {
     socket.emit("admin_join");
+
+    socket.on("can_send_update", (permission) => {
+      setCanSend(permission);
+    });
+
+    return () => socket.off("can_send_update");
   }, []);
 
   // Fetch questions from the backend
@@ -33,6 +41,7 @@ export default function Admin() {
   const handleShowPopup = (question) => {
     setPopupData(question);
     socket.emit("admin_show_question", question);
+    setHasRegisteredVotes(false); // Reset since a new question is shown
   };
 
   // Close question for everyone
@@ -53,6 +62,7 @@ export default function Admin() {
       }
     });
     setUserVotes([]);
+    setHasRegisteredVotes(true); // Mark votes as registered
   };
 
   const categories = [...new Set(questions.map((q) => q.category))];
@@ -86,11 +96,31 @@ export default function Admin() {
           <p>Prize: ${popupData.price}</p>
           <p>{popupData.question}</p>
 
-          <button onClick={() => socket.emit("set_global_permission", true)}>Open vote</button>
-          <button onClick={() => socket.emit("set_global_permission", false)}>Close vote</button>
+          {!canSend && (
+            <button onClick={
+              () => {
+                socket.emit("set_global_permission", true);
+                setCanSend(true)
+              }}>
+              Open vote
+            </button>
+          )}
+          {canSend && (
+            <button onClick={
+              () => {
+                socket.emit("set_global_permission", false)
+                setCanSend(false)
+              }}>
+              Close vote
+            </button>
+          )}
 
           <button onClick={() => socket.emit("show_answer", popupData)}>Show Answer</button>
-          <button onClick={handleClosePopup}>Close question</button>
+
+          {/* Disable "Close question" button based on vote registration */}
+          <button onClick={handleClosePopup} disabled={!hasRegisteredVotes}>
+            Close question
+          </button>
 
           <div>
             <h3>User Votes:</h3>
@@ -106,7 +136,9 @@ export default function Admin() {
                 </li>
               ))}
             </ul>
-            <button onClick={handleRegisterPoints}>Register Points</button>
+            <button onClick={handleRegisterPoints} disabled={hasRegisteredVotes}>
+              Register Points
+            </button>
           </div>
         </div>
       )}
