@@ -106,23 +106,36 @@ app.post('/add-user', (req, res) => {
   }
 });
 
+let playerPoints = {};
+
 io.on('connection', (socket) => {
   socket.on('login_user', (username) => {
     socket.username = username;
+    if (!playerPoints[username]) {
+      playerPoints[username] = 0;
+    }
     socket.emit('permission_status', globalAllowed);
   });
 
   socket.on('user_message', ({ username, msg }) => {
-    console.log(`Received message from ${username}: ${msg}`);
     if (globalAllowed) {
       io.to('admin').emit('new_message', { username, msg });
     }
+  });
+
+  socket.on('update_points', ({ username, points }) => {
+    if (playerPoints[username] !== undefined) {
+      playerPoints[username] += points;
+      io.to('admin').emit('points_updated', { username, points: playerPoints[username] });
+    }
+    console.log(playerPoints)
   });
 
   socket.on('admin_join', () => {
     socket.join('admin');
     socket.emit('approved_messages', approvedMessages);
     socket.emit('global_allowed', globalAllowed);
+    socket.emit('player_points', playerPoints);
   });
 
   socket.on('set_global_permission', (allowed) => {

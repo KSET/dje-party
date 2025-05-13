@@ -10,7 +10,7 @@ export default function Admin() {
 
   // Register to socket
   useEffect(() => {
-    socket.emit('admin_join');
+    socket.emit("admin_join");
   }, []);
 
   // Fetch questions from the backend
@@ -23,10 +23,10 @@ export default function Admin() {
 
   // Receive answer from player
   useEffect(() => {
-    socket.on('new_message', (message) => {
+    socket.on("new_message", (message) => {
       setUserVotes((prevVotes) => [...prevVotes, message]);
     });
-    return () => socket.off('new_message');
+    return () => socket.off("new_message");
   }, []);
 
   // Open question for everyone
@@ -35,10 +35,24 @@ export default function Admin() {
     socket.emit("admin_show_question", question);
   };
 
-  // Close question for everyones
+  // Close question for everyone
   const handleClosePopup = () => {
     setPopupData(null);
-    socket.emit('close_question');
+    socket.emit("close_question");
+  };
+
+  // Send points to the backend
+  const handleRegisterPoints = () => {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    checkboxes.forEach((checkbox) => {
+      const username = checkbox.getAttribute("data-username");
+      const points = parseInt(checkbox.getAttribute("data-points"));
+
+      if (username && points) {
+        socket.emit("update_points", { username, points });
+      }
+    });
+    setUserVotes([]);
   };
 
   const categories = [...new Set(questions.map((q) => q.category))];
@@ -72,10 +86,10 @@ export default function Admin() {
           <p>Prize: ${popupData.price}</p>
           <p>{popupData.question}</p>
 
-          <button onClick={() => socket.emit('set_global_permission', true)}>Open vote</button>
-          <button onClick={() => socket.emit('set_global_permission', false)}>Close vote</button>
+          <button onClick={() => socket.emit("set_global_permission", true)}>Open vote</button>
+          <button onClick={() => socket.emit("set_global_permission", false)}>Close vote</button>
 
-          <button onClick={() => socket.emit('show_answer', popupData)}>Show Answer</button>
+          <button onClick={() => socket.emit("show_answer", popupData)}>Show Answer</button>
           <button onClick={handleClosePopup}>Close question</button>
 
           <div>
@@ -84,11 +98,16 @@ export default function Admin() {
               {userVotes.map((vote, index) => (
                 <li key={index}>
                   {vote.username}: {vote.msg}
+                  <input
+                    type="checkbox"
+                    data-username={vote.username}
+                    data-points={popupData.price}
+                  />
                 </li>
               ))}
             </ul>
+            <button onClick={handleRegisterPoints}>Register Points</button>
           </div>
-
         </div>
       )}
     </div>
