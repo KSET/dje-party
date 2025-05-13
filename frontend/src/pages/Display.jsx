@@ -7,7 +7,7 @@ const socket = io("http://localhost:3001");
 export default function Display() {
   const [popupData, setPopupData] = useState(null);
   const [questions, setQuestions] = useState([]);
-  const [canSend, setCanSend] = useState(false);
+  const [_, setCanSend] = useState(false);
 
   // Register to socket
   useEffect(() => {
