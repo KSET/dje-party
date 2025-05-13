@@ -8,38 +8,39 @@ export default function Admin() {
   const [popupData, setPopupData] = useState(null);
   const [userVotes, setUserVotes] = useState([]);
 
+  // Register to socket
   useEffect(() => {
     socket.emit('admin_join');
   }, []);
 
+  // Fetch questions from the backend
   useEffect(() => {
-    // Fetch questions from the backend API
     fetch("http://localhost:3001/api/questions")
       .then((response) => response.json())
       .then((data) => setQuestions(data))
       .catch((error) => console.error("Error fetching questions:", error));
   }, []);
 
+  // Receive answer from player
   useEffect(() => {
     socket.on('new_message', (message) => {
-      console.log("tu smo?")
       setUserVotes((prevVotes) => [...prevVotes, message]);
     });
-
     return () => socket.off('new_message');
   }, []);
 
+  // Open question for everyone
   const handleShowPopup = (question) => {
     setPopupData(question);
     socket.emit("admin_show_question", question);
   };
 
+  // Close question for everyones
   const handleClosePopup = () => {
     setPopupData(null);
     socket.emit('close_question');
   };
 
-  // Group questions by category
   const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions = categories.map((category) =>
     questions.filter((q) => q.category === category)

@@ -9,36 +9,49 @@ export default function Display() {
   const [questions, setQuestions] = useState([]);
   const [canSend, setCanSend] = useState(false);
 
+  // Register to socket
   useEffect(() => {
-    // Fetch questions from the backend API
+    socket.emit("display_join");
+  }, []);
+
+  // Fetch questions from the backend
+  useEffect(() => {
     fetch("http://localhost:3001/api/questions")
       .then((response) => response.json())
       .then((data) => setQuestions(data))
       .catch((error) => console.error("Error fetching questions:", error));
   }, []);
 
+  // Not sure tbh
   useEffect(() => {
     socket.on('permission_status', (allowed) => setCanSend(allowed));
     return () => socket.off('permission_status');
   }, []);
 
+  // Display question in popup box
+  useEffect(() => {
+    const handleDisplayQuestion = (question) => {
+      setPopupData(question);
+    };
+    socket.on("display_question", handleDisplayQuestion);
+    return () => {
+      socket.off("display_question", handleDisplayQuestion);
+    };
+  }, []);
+
+  // Show answer in popup box
   useEffect(() => {
     const handleShowAnswer = (data) => {
-      setPopupData((prev) => ({ ...prev, question: data.answer })); // Replace question with answer
+      setPopupData((prev) => ({ ...prev, question: data.answer }));
     };
-
     socket.on('show_answer', handleShowAnswer);
-
     return () => socket.off('show_answer', handleShowAnswer);
   }, []);
 
+  // Close popup box
   useEffect(() => {
-    const handleCloseQuestion = () => {
-      setPopupData(null); // Clear the popup data on the display side
-    };
-
+    const handleCloseQuestion = () => {setPopupData(null);}
     socket.on('close_question', handleCloseQuestion);
-
     return () => socket.off('close_question', handleCloseQuestion);
   }, []);
 
@@ -46,23 +59,6 @@ export default function Display() {
   const groupedQuestions = categories.map((category) =>
     questions.filter((q) => q.category === category)
   );
-
-  useEffect(() => {
-    socket.emit("display_join"); // Tell the server this is a "display" client
-  }, []);
-
-  useEffect(() => {
-    const handleDisplayQuestion = (question) => {
-      console.log("Received question from backend:", question); // Debugging log
-      setPopupData(question); // Update popupData state
-    };
-
-    socket.on("display_question", handleDisplayQuestion);
-
-    return () => {
-      socket.off("display_question", handleDisplayQuestion); // Cleanup listener
-    };
-  }, []);
 
   return (
     <div className="display-container">

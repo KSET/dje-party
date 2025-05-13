@@ -7,20 +7,19 @@ export default function User({ username }) {
   const [message, setMessage] = useState('');
   const [canSend, setCanSend] = useState(true);
 
+  // Register user /'s answering permissions
   useEffect(() => {
     socket.emit('login_user', username);
-
     const handlePermission = (allowed) => {
       setCanSend(allowed);
     };
-
     socket.on('permission_status', handlePermission);
-
     return () => {
       socket.off('permission_status', handlePermission);
     };
   }, [username]);
 
+  // Send message to admin
   const sendMessage = () => {
     if (!message.trim()) return;
     socket.emit('user_message', { username, msg: message });
