@@ -47,6 +47,8 @@ export default function Admin() {
   // Close question for everyone
   const handleClosePopup = () => {
     setPopupData(null);
+    setCanSend(false)
+    socket.emit("set_global_permission", false)
     socket.emit("close_question");
   };
 
