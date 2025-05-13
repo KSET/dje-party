@@ -6,6 +6,11 @@ const socket = io("http://localhost:3001");
 export default function Admin() {
   const [questions, setQuestions] = useState([]);
   const [popupData, setPopupData] = useState(null);
+  const [userVotes, setUserVotes] = useState([]);
+
+  useEffect(() => {
+    socket.emit('admin_join');
+  }, []);
 
   useEffect(() => {
     // Fetch questions from the backend API
@@ -13,6 +18,15 @@ export default function Admin() {
       .then((response) => response.json())
       .then((data) => setQuestions(data))
       .catch((error) => console.error("Error fetching questions:", error));
+  }, []);
+
+  useEffect(() => {
+    socket.on('new_message', (message) => {
+      console.log("tu smo?")
+      setUserVotes((prevVotes) => [...prevVotes, message]);
+    });
+
+    return () => socket.off('new_message');
   }, []);
 
   const handleShowPopup = (question) => {
@@ -55,7 +69,23 @@ export default function Admin() {
           <h3>{popupData.category}</h3>
           <p>Prize: ${popupData.price}</p>
           <p>{popupData.question}</p>
-          <button onClick={handleClosePopup}>Close</button>
+
+          <button onClick={() => socket.emit('set_global_permission', true)}>Open vote</button>
+          <button onClick={() => socket.emit('set_global_permission', false)}>Close vote</button>
+
+          <button onClick={handleClosePopup}>Close question</button>
+
+          <div>
+            <h3>User Votes:</h3>
+            <ul>
+              {userVotes.map((vote, index) => (
+                <li key={index}>
+                  {vote.username}: {vote.msg}
+                </li>
+              ))}
+            </ul>
+          </div>
+
         </div>
       )}
     </div>

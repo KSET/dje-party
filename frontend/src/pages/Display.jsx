@@ -7,6 +7,7 @@ const socket = io("http://localhost:3001");
 export default function Display() {
   const [popupData, setPopupData] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [canSend, setCanSend] = useState(false);
 
   useEffect(() => {
     // Fetch questions from the backend API
@@ -14,6 +15,11 @@ export default function Display() {
       .then((response) => response.json())
       .then((data) => setQuestions(data))
       .catch((error) => console.error("Error fetching questions:", error));
+  }, []);
+
+  useEffect(() => {
+    socket.on('permission_status', (allowed) => setCanSend(allowed));
+    return () => socket.off('permission_status');
   }, []);
 
   const categories = [...new Set(questions.map((q) => q.category))];

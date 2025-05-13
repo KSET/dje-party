@@ -2,3 +2,4 @@ username,password,role
 admin,adminpass,admin
 display,display,user
 ericsson,e1,user
+tesla,t1,user

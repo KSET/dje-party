@@ -7,9 +7,16 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const session = require('express-session');
 const path = require('path');
+const { EventEmitter } = require('stream');
+const e = require('express');
 
 const app = express();
 const server = http.createServer(app);
+
+const emitter = new EventEmitter()
+emitter.setMaxListeners(0)
+
+
 const io = new Server(server, {
   cors: { origin: 'http://localhost:5173', methods: ['GET', 'POST'] }
 });
@@ -40,7 +47,7 @@ app.use(cors({
 app.use(bodyParser.json());
 
 let approvedMessages = [];
-let globalAllowed = true;
+let globalAllowed = false;
 
 
 const PORT = 3001;
@@ -130,6 +137,12 @@ io.on('connection', (socket) => {
     globalAllowed = allowed;
     io.emit('permission_status', globalAllowed);
     io.to('admin').emit('global_allowed', globalAllowed);
+  });
+
+  socket.on('user_message', ({ username, msg }) => {
+    if (globalAllowed) {
+      io.to('admin').emit('new_message', { username, msg });
+    }
   });
 
   socket.on('display_join', () => {
