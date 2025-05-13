@@ -36,6 +36,7 @@ export default function User({ username }) {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Enter message"
+        disabled={!canSend}
       />
       <button onClick={sendMessage} disabled={!canSend}>Send</button>
     </div>
