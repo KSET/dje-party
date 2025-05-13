@@ -22,6 +22,26 @@ export default function Display() {
     return () => socket.off('permission_status');
   }, []);
 
+  useEffect(() => {
+    const handleShowAnswer = (data) => {
+      setPopupData((prev) => ({ ...prev, question: data.answer })); // Replace question with answer
+    };
+
+    socket.on('show_answer', handleShowAnswer);
+
+    return () => socket.off('show_answer', handleShowAnswer);
+  }, []);
+
+  useEffect(() => {
+    const handleCloseQuestion = () => {
+      setPopupData(null); // Clear the popup data on the display side
+    };
+
+    socket.on('close_question', handleCloseQuestion);
+
+    return () => socket.off('close_question', handleCloseQuestion);
+  }, []);
+
   const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions = categories.map((category) =>
     questions.filter((q) => q.category === category)

@@ -1,0 +1,5 @@
+.closed {
+  background-color: red;
+  color: white;
+  pointer-events: none; /* Prevent clicking */
+}

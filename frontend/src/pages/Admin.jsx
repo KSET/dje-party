@@ -35,7 +35,8 @@ export default function Admin() {
   };
 
   const handleClosePopup = () => {
-    setPopupData(null); // Close the popup
+    setPopupData(null);
+    socket.emit('close_question');
   };
 
   // Group questions by category
@@ -73,6 +74,7 @@ export default function Admin() {
           <button onClick={() => socket.emit('set_global_permission', true)}>Open vote</button>
           <button onClick={() => socket.emit('set_global_permission', false)}>Close vote</button>
 
+          <button onClick={() => socket.emit('show_answer', popupData)}>Show Answer</button>
           <button onClick={handleClosePopup}>Close question</button>
 
           <div>

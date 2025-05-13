@@ -137,8 +137,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('admin_show_question', (question) => {
-    console.log('Broadcasting question to display:', question);
     io.to('display').emit('display_question', question);
+  });
+
+  socket.on('show_answer', (data) => {
+    io.to('display').emit('show_answer', data);
+  });
+
+  socket.on('close_question', () => {
+    io.to('display').emit('close_question');
   });
 });
 
