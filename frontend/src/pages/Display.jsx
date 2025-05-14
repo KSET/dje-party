@@ -77,15 +77,15 @@ export default function Display() {
 
   return (
     <div className="display-container">
-      <div className="jeopardy-grid">
+      <div className="display-grid">
         {groupedQuestions.map((questions, categoryIndex) => (
           <div key={categoryIndex} className="category-column">
-            <div className="category-header">{categories[categoryIndex]}</div>
+            <div className="category-header shadow">{categories[categoryIndex]}</div>
             {questions.map((q, questionIndex) => (
               <div key={questionIndex}
-                className={`prize-cell ${readQuestions.has(q.id) ? "read-display" : ""}`}
+                className={`prize-cell ${readQuestions.has(q.id) ? "read-display" : "shadow"}`}
               >
-                ${q.price}
+                {q.price}
               </div>
             ))}
           </div>
@@ -95,9 +95,7 @@ export default function Display() {
       {popupData && (
         <div className="popup-overlay">
           <div className="popup">
-            <h3 className="popup-category">{popupData.category}</h3>
-            <p className="popup-prize">Prize: ${popupData.price}</p>
-            <p className="popup-question">{popupData.question}</p>
+            <p className="popup-question shadow">{popupData.question}</p>
           </div>
         </div>
       )}

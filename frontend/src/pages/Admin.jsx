@@ -87,7 +87,9 @@ export default function Admin() {
 
   return (
     <div>
-      <h2>Admin Panel</h2>
+      <div className="top-panel">
+        <h2>Đe Party konzola</h2>
+      </div>
       <div className="question-panel">
         <div className="jeopardy-grid">
           {groupedQuestions.map((categoryQuestions, categoryIndex) => (
@@ -112,54 +114,57 @@ export default function Admin() {
         </div>
 
         {popupData && (
-          <div className="popup">
-            <h3>{popupData.category}</h3>
-            <p>Prize: ${popupData.price}</p>
-            <p>{popupData.question}</p>
-
-            {!canSend && (
-              <button onClick={
-                () => {
-                  socket.emit("set_global_permission", true);
-                  setCanSend(true)
-                }}>
-                Open vote
-              </button>
-            )}
-            {canSend && (
-              <button onClick={
-                () => {
-                  socket.emit("set_global_permission", false)
-                  setCanSend(false)
-                }}>
-                Close vote
-              </button>
-            )}
-
-            <button onClick={() => socket.emit("show_answer", popupData)}>Show Answer</button>
-
-            {/* Disable "Close question" button based on vote registration */}
-            <button onClick={handleClosePopup} disabled={!hasRegisteredVotes}>
-              Close question
-            </button>
-
-            <div>
-              <h3>User Votes:</h3>
-              <ul>
-                {userVotes.map((vote, index) => (
-                  <li key={index}>
-                    {vote.username}: {vote.msg}
-                    <input
-                      type="checkbox"
-                      data-username={vote.username}
-                      data-points={popupData.price}
-                    />
-                  </li>
-                ))}
-              </ul>
-              <button onClick={handleRegisterPoints} disabled={hasRegisteredVotes}>
-                Register Points
-              </button>
+          <div className="popup-overlay">
+            <div className="popup">
+              <div className="admin-popup-content">
+                <div>
+                  <p>{popupData.category}, <b>{popupData.price}</b> bodova</p>
+                  <p>Pitanje: {popupData.question}</p>
+                  <p><i>Odgovor: {popupData.answer}</i></p>
+                </div>
+                <div>
+                  <h3>Odgovori</h3>
+                  <div className="scrollable">
+                    {userVotes.map((vote, index) => (
+                      <p key={index}>
+                      {vote.username}: {vote.msg}
+                      <input
+                        type="checkbox"
+                        data-username={vote.username}
+                        data-points={popupData.price}
+                      />
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="admin-popup-buttons">
+                {!canSend && (
+                  <button className="btn-grn" onClick={
+                    () => {
+                      socket.emit("set_global_permission", true);
+                      setCanSend(true)
+                    }}>
+                    Uključi odgovore
+                  </button>
+                )}
+                {canSend && (
+                  <button className="btn-red" onClick={
+                    () => {
+                      socket.emit("set_global_permission", false)
+                      setCanSend(false)
+                    }}>
+                    Isključi odgovore
+                  </button>
+                )}
+                <button onClick={() => socket.emit("show_answer", popupData)}>Prikaži odgovor</button>
+                <button onClick={handleRegisterPoints} disabled={hasRegisteredVotes}>
+                    Spremi bodove
+                  </button>
+                <button onClick={handleClosePopup} disabled={!hasRegisteredVotes}>
+                  Zatvori pitanje
+                </button>
+              </div>
             </div>
           </div>
         )}

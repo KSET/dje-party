@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import "./Display.css";
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -23,11 +24,13 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
-      <input placeholder="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={login}>Login</button>
+    <div className='login-container'>
+      <div classname="login-title">Đe Party 2025. - prijava</div>
+      <form className='form-container'>
+        <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
+        <input placeholder="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+        <button onClick={login}>Prijava</button>
+      </form>
     </div>
   );
 }
