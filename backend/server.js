@@ -160,6 +160,10 @@ io.on('connection', (socket) => {
   socket.on('close_question', () => {
     io.to('display').emit('close_question');
   });
+
+  socket.on('mark_as_read', (questionId) => {
+    io.to('display').emit('mark_as_read', questionId);
+  });
 });
 
 server.listen(3001, () => {

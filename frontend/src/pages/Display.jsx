@@ -8,6 +8,7 @@ export default function Display() {
   const [popupData, setPopupData] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [_, setCanSend] = useState(false);
+  const [readQuestions, setReadQuestions] = useState(new Set());
 
   // Register to socket
   useEffect(() => {
@@ -55,6 +56,16 @@ export default function Display() {
     return () => socket.off('close_question', handleCloseQuestion);
   }, []);
 
+  // Mark question as read
+  useEffect(() => {
+    const handleMarkAsRead = (questionId) => {
+      setReadQuestions((prev) => new Set([...prev, questionId]));
+    };
+
+    socket.on("mark_as_read", handleMarkAsRead);
+    return () => socket.off("mark_as_read", handleMarkAsRead);
+  }, []);
+
   const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions = categories.map((category) =>
     questions.filter((q) => q.category === category)
@@ -67,7 +78,9 @@ export default function Display() {
           <div key={categoryIndex} className="category-column">
             <div className="category-header">{categories[categoryIndex]}</div>
             {questions.map((q, questionIndex) => (
-              <div key={questionIndex} className="prize-cell">
+              <div key={questionIndex}
+                className={`prize-cell ${readQuestions.has(q.id) ? "read" : ""}`}
+              >
                 ${q.price}
               </div>
             ))}

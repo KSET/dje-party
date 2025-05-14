@@ -51,6 +51,7 @@ export default function Admin() {
     setCanSend(false)
     socket.emit("set_global_permission", false)
     socket.emit("close_question");
+    socket.emit("mark_as_read", popupData.id)
   };
 
   // Send points to the backend
