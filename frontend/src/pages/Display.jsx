@@ -17,11 +17,15 @@ export default function Display() {
 
   // Fetch questions from the backend
   useEffect(() => {
-    fetch("http://localhost:3001/api/questions")
-      .then((response) => response.json())
-      .then((data) => setQuestions(data))
-      .catch((error) => console.error("Error fetching questions:", error));
-  }, []);
+      fetch("http://localhost:3001/api/questions")
+        .then((response) => response.json())
+        .then((data) => {
+          setQuestions(data);
+          const answeredIndices = data.filter((q) => !q.answered).map((q) => q.id);
+          setReadQuestions(new Set(answeredIndices));
+        })
+        .catch((error) => console.error("Error fetching questions:", error));
+    }, []);
 
   // Not sure tbh
   useEffect(() => {
