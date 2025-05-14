@@ -4,23 +4,23 @@ id,round,category,price,question,answer,double,answered
 2,1,Science,600,What is the powerhouse of the cell?,Mitochondria,false,false
 3,1,Science,800,What element has the chemical symbol 'O'?,Oxygen,false,false
 4,1,Science,1000,What law explains why ships float?,Archimedes' Principle,false,false
-5,1,History,200,Who was the first president of the United States?,George Washington,false,true
+5,1,History,200,Who was the first president of the United States?,George Washington,false,false
 6,1,History,400,What year did World War II end?,1945,false,false
 7,1,History,600,What wall came down in 1989 symbolizing the Cold War's end?,Berlin Wall,false,false
 8,1,History,800,Who was the British Prime Minister during WWII?,Winston Churchill,false,false
 9,1,History,1000,Which empire was ruled by Genghis Khan?,Mongol Empire,false,false
-10,1,Literature,200,Who wrote "Romeo and Juliet"?,William Shakespeare,false,false,,,
+10,1,Literature,200,Who wrote "Romeo and Juliet"?,William Shakespeare,false,false,,,,,,false,,,,,,
 11,1,Literature,400,What is the name of the wizarding school in Harry Potter?,Hogwarts,false,false
-12,1,Literature,600,Who wrote "1984" and "Animal Farm"?,George Orwell,false,false,,,
+12,1,Literature,600,Who wrote "1984" and "Animal Farm"?,George Orwell,false,false,,,,,,false,,,,,,
 13,1,Literature,800,In what novel would you find the character Atticus Finch?,To Kill a Mockingbird,false,false
-14,1,Literature,1000,Who is the author of "One Hundred Years of Solitude"?,Gabriel García Márquez,false,false,,,
+14,1,Literature,1000,Who is the author of "One Hundred Years of Solitude"?,Gabriel García Márquez,false,false,,,,,,false,,,,,,
 15,1,Geography,200,What is the capital of France?,Paris,false,false
 16,1,Geography,400,What river runs through Egypt?,Nile,false,false
-17,1,Geography,600,What U.S. state is known as the Sunshine State?,Florida,false,true
+17,1,Geography,600,What U.S. state is known as the Sunshine State?,Florida,false,false
 18,1,Geography,800,What country has the most time zones?,France,false,false
 19,1,Geography,1000,What is the deepest point in Earth's oceans?,Mariana Trench,false,false
-20,1,Pop Culture,200,What singer is known as the "Queen of Pop"?,Madonna,false,false,,,
-21,1,Pop Culture,400,What is the name of the coffee shop in "Friends"?,Central Perk,false,false,,,
+20,1,Pop Culture,200,What singer is known as the "Queen of Pop"?,Madonna,false,false,,,,,,false,,,,,,
+21,1,Pop Culture,400,What is the name of the coffee shop in "Friends"?,Central Perk,false,false,,,,,,false,,,,,,
 22,1,Pop Culture,600,Who played Iron Man in the Marvel movies?,Robert Downey Jr.,false,false
 23,1,Pop Culture,800,What 2020 Netflix show featured chess prodigy Beth Harmon?,The Queen's Gambit,false,false
 24,1,Pop Culture,1000,Who won the first season of American Idol?,Kelly Clarkson,false,false
