@@ -113,8 +113,12 @@
 }
 
 .read-admin {
-  color: gray;
-  font: italic;
+  color: lightgray;
+  font-style: italic;
+}
+
+.read-admin:hover{
+  cursor: default;
 }
 
 .read-display {

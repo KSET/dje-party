@@ -92,9 +92,14 @@ export default function Admin() {
                 <div
                   key={questionIndex}
                   className={`question-box ${readQuestions.has(q.id) ? "read-admin" : ""}`}
-                  onClick={() => handleShowPopup(q)}
+                  onClick={() => !readQuestions.has(q.id) && handleShowPopup(q)}
                 >
-                  <p>{q.price} - {q.question}</p>
+                  <p>
+                    {q.price} - {q.question}
+                    <b>
+                      {readQuestions.has(q.id) && " - " + q.answer}
+                    </b>
+                  </p>
                 </div>
               ))}
             </div>
