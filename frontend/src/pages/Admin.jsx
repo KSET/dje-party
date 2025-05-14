@@ -10,6 +10,7 @@ export default function Admin() {
   const [userVotes, setUserVotes] = useState([]);
   const [canSend, setCanSend] = useState(false);
   const [hasRegisteredVotes, setHasRegisteredVotes] = useState(false);
+  const [readQuestions, setReadQuestions] = useState(new Set());
 
   // Register to socket
   useEffect(() => {
@@ -85,7 +86,7 @@ export default function Admin() {
               {categoryQuestions.map((q, questionIndex) => (
                 <div
                   key={questionIndex}
-                  className="question-box"
+                  className={`question-box ${readQuestions.has(q.id) ? "read-admin" : ""}`}
                   onClick={() => handleShowPopup(q)}
                 >
                   <p>{q.price} - {q.question}</p>

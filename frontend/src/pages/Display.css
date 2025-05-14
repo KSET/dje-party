@@ -111,3 +111,12 @@
   color: red;
   font-weight: bold;
 }
+
+.read-admin {
+  color: gray;
+  font: italic;
+}
+
+.read-display {
+  color: transparent;
+}

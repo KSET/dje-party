@@ -79,7 +79,7 @@ export default function Display() {
             <div className="category-header">{categories[categoryIndex]}</div>
             {questions.map((q, questionIndex) => (
               <div key={questionIndex}
-                className={`prize-cell ${readQuestions.has(q.id) ? "read" : ""}`}
+                className={`prize-cell ${readQuestions.has(q.id) ? "read-display" : ""}`}
               >
                 ${q.price}
               </div>
