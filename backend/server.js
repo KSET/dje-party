@@ -58,13 +58,13 @@ app.get("/api/questions", (req, res) => {
     if (err) {
       return res.status(500).json({ error: "Unable to read file" });
     }
-    const rows = data.split("\n").slice(1); // Remove headers
+    const rows = data.split("\n").slice(1);
     const questions = rows
-      .filter((row) => row.trim() !== "") // Filter out empty rows
+      .filter((row) => row.trim() !== "")
       .map((row) => {
-        const [round, category, price, question, answer, double] =
+        const [ id, round, category, price, question, answer, double, answered ] =
           row.split(",");
-        return { round, category, price, question, answer, double };
+        return { id, round, category, price, question, answer, double, answered };
       });
     res.json(questions);
   });

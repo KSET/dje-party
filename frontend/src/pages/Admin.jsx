@@ -85,7 +85,7 @@ export default function Admin() {
                 className="question-box"
                 onClick={() => handleShowPopup(q)}
               >
-                <p>${q.price}</p>
+                <p>{q.price} - {q.question}</p>
               </div>
             ))}
           </div>
