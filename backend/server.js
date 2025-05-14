@@ -164,6 +164,36 @@ io.on('connection', (socket) => {
   socket.on('mark_as_read', (questionId) => {
     io.to('display').emit('mark_as_read', questionId);
   });
+
+  socket.on("update_csv", ({ id }) => {
+  const fs = require("fs");
+  const csv = require("csv-parser");
+  const path = "./questions.csv";
+
+  const questions = [];
+  let headers = [];
+
+  fs.createReadStream(path)
+    .pipe(csv())
+    .on("headers", (headerList) => {
+      headers = headerList;
+    })
+    .on("data", (row) => {
+      if (row.id === id.toString()) {
+        row.answered = true;
+      }
+      questions.push(row);
+    })
+    .on("end", () => {
+      const output = [
+        headers.join(","),
+        ...questions.map(q => headers.map(h => q[h]).join(","))
+      ].join("\n");
+
+      fs.writeFileSync(path, output);
+    });
+});
+
 });
 
 server.listen(3001, () => {

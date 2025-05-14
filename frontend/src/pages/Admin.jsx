@@ -27,7 +27,11 @@ export default function Admin() {
   useEffect(() => {
     fetch("http://localhost:3001/api/questions")
       .then((response) => response.json())
-      .then((data) => setQuestions(data))
+      .then((data) => {
+        setQuestions(data);
+        const answeredIndices = data.filter((q) => q.answered == "true").map((q) => q.id);
+        setReadQuestions(new Set(answeredIndices));
+      })
       .catch((error) => console.error("Error fetching questions:", error));
   }, []);
 
@@ -55,6 +59,7 @@ export default function Admin() {
 
     if (popupData?.id) {
       setReadQuestions((prev) => new Set([...prev, popupData.id]));
+      socket.emit("update_csv", { id: popupData.id });
     }
 
     socket.emit("mark_as_read", popupData.id)
@@ -83,8 +88,8 @@ export default function Admin() {
   return (
     <div>
       <h2>Admin Panel</h2>
-      <div class="question-panel">
-        <div class="jeopardy-grid">
+      <div className="question-panel">
+        <div className="jeopardy-grid">
           {groupedQuestions.map((categoryQuestions, categoryIndex) => (
             <div key={categoryIndex} className="category-column">
               <h3>{categoryQuestions[0]?.category}</h3>

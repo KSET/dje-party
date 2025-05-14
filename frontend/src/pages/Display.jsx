@@ -21,7 +21,7 @@ export default function Display() {
         .then((response) => response.json())
         .then((data) => {
           setQuestions(data);
-          const answeredIndices = data.filter((q) => !q.answered).map((q) => q.id);
+          const answeredIndices = data.filter((q) => q.answered == "true").map((q) => q.id);
           setReadQuestions(new Set(answeredIndices));
         })
         .catch((error) => console.error("Error fetching questions:", error));
