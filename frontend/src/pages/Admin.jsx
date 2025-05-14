@@ -52,6 +52,11 @@ export default function Admin() {
     setCanSend(false)
     socket.emit("set_global_permission", false)
     socket.emit("close_question");
+
+    if (popupData?.id) {
+      setReadQuestions((prev) => new Set([...prev, popupData.id]));
+    }
+
     socket.emit("mark_as_read", popupData.id)
   };
 
