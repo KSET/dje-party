@@ -34,8 +34,6 @@ function loadUsersFromCSV(filePath) {
     });
   return loadedUsers;
 }
-
-// Initialize users from CSV
 let users = loadUsersFromCSV('./users.csv');
 
 app.use(cors({
@@ -51,6 +49,31 @@ let globalAllowed = false;
 
 
 const PORT = 3001;
+
+function resetAnsweredFields() {
+  const questions = [];
+  let headers = [];
+  let path = "./questions.csv";
+
+  fs.createReadStream(path)
+    .pipe(csv())
+    .on("headers", (headerList) => {
+      headers = headerList;
+    })
+    .on("data", (row) => {
+      row.answered = "false";
+      questions.push(row);
+    })
+    .on("end", () => {
+      const output = [
+        headers.join(","),
+        ...questions.map(q => headers.map(h => q[h]).join(","))
+      ].join("\n");
+      fs.writeFileSync(path, output);
+      console.log("All 'answered' fields reset to false.");
+    });
+}
+resetAnsweredFields()
 
 app.get("/api/questions", (req, res) => {
   const filePath = path.join(__dirname, "questions.csv");
@@ -166,32 +189,31 @@ io.on('connection', (socket) => {
   });
 
   socket.on("update_csv", ({ id }) => {
-  const fs = require("fs");
-  const csv = require("csv-parser");
-  const path = "./questions.csv";
+    const fs = require("fs");
+    const csv = require("csv-parser");
+    const path = "./questions.csv";
 
-  const questions = [];
-  let headers = [];
+    const questions = [];
+    let headers = [];
 
-  fs.createReadStream(path)
-    .pipe(csv())
-    .on("headers", (headerList) => {
-      headers = headerList;
-    })
-    .on("data", (row) => {
-      if (row.id === id.toString()) {
-        row.answered = true;
-      }
-      questions.push(row);
-    })
-    .on("end", () => {
-      const output = [
-        headers.join(","),
-        ...questions.map(q => headers.map(h => q[h]).join(","))
-      ].join("\n");
-
-      fs.writeFileSync(path, output);
-    });
+    fs.createReadStream(path)
+      .pipe(csv())
+      .on("headers", (headerList) => {
+        headers = headerList;
+      })
+      .on("data", (row) => {
+        if (row.id === id.toString()) {
+          row.answered = true;
+        }
+        questions.push(row);
+      })
+      .on("end", () => {
+        const output = [
+          headers.join(","),
+          ...questions.map(q => headers.map(h => q[h]).join(","))
+        ].join("\n");
+        fs.writeFileSync(path, output);
+      });
 });
 
 });
