@@ -47,11 +47,6 @@
   border: 2px solid #fff;
 }
 
-.prize-cell:hover {
-  background-color: #4682b4;
-  color: white;
-}
-
 /* Popup overlay for displaying question */
 .popup-overlay {
   position: fixed;
