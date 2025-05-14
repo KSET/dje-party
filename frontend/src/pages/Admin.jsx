@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import "./Display.css";
 
 const socket = io("http://localhost:3001");
 
@@ -75,7 +76,7 @@ export default function Admin() {
   return (
     <div>
       <h2>Admin Panel</h2>
-      <div className="grid">
+      <div class="jeopardy-grid">
         {groupedQuestions.map((categoryQuestions, categoryIndex) => (
           <div key={categoryIndex} className="category-column">
             <h3>{categoryQuestions[0]?.category}</h3>
