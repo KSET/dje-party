@@ -25,12 +25,10 @@ export default function Login({ onLogin }) {
 
   return (
     <div className='login-container'>
-      <div classname="login-title">Đe Party 2025. - prijava</div>
-      <form className='form-container'>
-        <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
-        <input placeholder="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        <button onClick={login}>Prijava</button>
-      </form>
+      <h2>Login</h2>
+      <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
+      <input placeholder="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <button onClick={login}>Prijava</button>
     </div>
   );
 }
