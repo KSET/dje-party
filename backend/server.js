@@ -8,6 +8,7 @@ const csv = require("csv-parser");
 const session = require('express-session');
 const path = require('path');
 const e = require('express');
+require('dotenv').config({ path: '../frontend/.env' }); 
 
 const app = express();
 const server = http.createServer(app);
@@ -21,7 +22,7 @@ let approvedMessages = [];
 let globalAllowed = false;
 let playerPoints = {};
 
-const URL = "http://10.30.1.59"
+const URL = process.env.VITE_SERVER_URL.slice(0, -5)
 const PORT = 3001;
 
 const io = new Server(server, {
@@ -219,6 +220,6 @@ io.on('connection', (socket) => {
 
 });
 
-server.listen(3001, () => {
-  console.log('Server running on http://localhost:3001');
+server.listen(PORT, () => {
+  console.log(`Server running on ${URL}:${PORT}`)
 });

@@ -1,13 +1,13 @@
 id,round,category,price,question,answer,double,answered
-0,1,Film,100,"Tko je pjevao ""My Heart Will Go On"" u Titanicu?",Celine Dion,false,false
+0,1,Film,100,Tko je pjevao "My Heart Will Go On" u Titanicu?,Celine Dion,false,false,,,,,,false,,,false,,,false,,,false,,,false,,,false
 1,1,Film,200,Film iz 2019. koji je istovremeno snimljen na korejskom i engleskom jeziku te je osvojio Oscara za najbolji film.,Parasite,false,false
 2,1,Film,300,U kojem filmu Leonardo DiCaprio glumi lika koji ulazi u snove drugih ljudi?,Inception,false,false
 3,1,Film,500,Koje godine je bila prva dodjela nagrade Oscar?,1929,false,false
 4,1,Film,400,Ovaj je hit benda Film iz 1981. poznat po refrenu “Zajedno...”,Zajedno,false,false
 5,1,Gen Z,100,ovaj hrvatski viralni meme govori o tome kako hrvatska vlada špijunira narod,špijuniro golubiro,false,false
-6,1,Gen Z,200,"Popularna aplikacija među Gen Z kojom se šalje jedna nenamještena fotka dnevno, u točno određenom trenutku.",BeReal,false,false
+6,1,Gen Z,200,Popularna aplikacija među Gen Z kojom se šalje jedna nenamještena fotka dnevno, u točno određenom trenutku.,BeReal,false
 7,1,Gen Z,300,Ova serija popularna među mladima hrvatska je adaptacija norveške serije Skam ,sram,false,false
-8,1,Gen Z,400,"Ovaj emoji Gen Z često koristi da izrazi smijeh umjesto klasičnog ""plačem od smijeha"" emotikona",lubanja / plakanje (sob),false,false
+8,1,Gen Z,400,Ovaj emoji Gen Z često koristi da izrazi smijeh umjesto klasičnog "plačem od smijeha" emotikona,lubanja / plakanje (sob),false,false,,,,,,false,,,false,,,false,,,false,,,false,,,false
 9,1,Gen Z,500,Ova svakidašnja radnja koristi se kao fraza za dobro obavljen posao.,pojesti,false,false
 10,1,Grad Zagreb,100,Koji broj moraš znati ako šalješ razglednicu iz Zagreba ili u Zagreb?,10000,false,false
 11,1,Grad Zagreb,200,Koje vozilo u Zagrebu u jednom putu pređe maksimalno 66 metara?,uspinjača,false,false
@@ -15,12 +15,12 @@ id,round,category,price,question,answer,double,answered
 13,1,Grad Zagreb,400,U kojem se mjesecu tradicionalno održava Zagrebački maraton?,Listopad (10.),false,false
 14,1,Grad Zagreb,500,U kojem je stoljeću osnovano Sveučilište u Zagrebu?,17. stoljeće (1669.),false,false
 15,1,IT,100,Popularni format kompresije datoteka koji smanjuje veličinu bez gubitka sadržaja.,ZIP,false,false
-16,1,IT,200,"U mrežama, ova kratica označava jedinstvenu adresu svakog uređaja spojenog na Internet.",IP adresa,false,false
+16,1,IT,200,U mrežama, ova kratica označava jedinstvenu adresu svakog uređaja spojenog na Internet.,IP adresa,false
 17,1,IT,300,Ova je tvrtka vlasnik GitHub-a.,Microsoft,false,false
 18,1,IT,400,koliko je godina skype bio u pogonu?,21 godina,false,false
-19,1,IT,500,"Sigurnosni mehanizam koji se postavlja između lokalne mreže i vanjskog interneta, filtrira promet.",Vatrozid (firewall),false,false
+19,1,IT,500,Sigurnosni mehanizam koji se postavlja između lokalne mreže i vanjskog interneta, filtrira promet.,Vatrozid (firewall),false
 20,1,Ivan,100,Tko je napisao Smrt Smail-age Čengića?,Ivan Mažuranić,false,false
-21,1,Ivan,200,"Tko je autor djela ""Kako je Potjeh tražio istinu""",Ivana Brlić-Mažuranić,false,false
+21,1,Ivan,200,Tko je autor djela "Kako je Potjeh tražio istinu",Ivana Brlić-Mažuranić,false,false
 22,1,Ivan,300,Ovaj Ivan bio je vođa hrvatske reprezentacije 2018. i poznat po ‘škaricama’,Ivan Perišić,false,false
 23,1,Ivan,400,Kako glasi češki oblik imena Ivan ako znamo da to ime nosi i jedan poznati golman nama susjedne države,Jan,false,false
 24,1,Ivan,500,Koji nadimak se pripisuje velikom knezu Moskve Ivanu IV. ?,Ivan IV. Grozni / Strašni,false,false
@@ -28,9 +28,9 @@ id,round,category,price,question,answer,double,answered
 26,1,Kemija,200,Što nastaje kada se pomiješaju kiseline i baze?,Sol i voda,false,false
 27,1,Kemija,300,kemijski spoj poznat kao stolna sol,NaCl,false,false
 28,1,Kemija,400,Koje je godine izašao hit Magazina čiji je naziv jednak imenu ove kategorije,2010,false,false
-29,1,Kemija,500,"Bojni otrov službenog imena diklordietil-sulfid svoje je svijetlo dana ugledao u cik Prvog svjetskog rata, a u engleskom žargonu je ostao upamćen po svojoj specifičnoj boji te je stoga dobio nadimak po jednom „finom“ začinu. Kojem?",senf (mustard),false,false
+29,1,Kemija,500,Bojni otrov službenog imena diklordietil-sulfid svoje je svijetlo dana ugledao u cik Prvog svjetskog rata, a u engleskom žargonu je ostao upamćen po svojoj specifičnoj boji te je stoga dobio nadimak po jednom „finom“ začinu. Kojem?,senf (mustard),false
 30,1,Sport,100,Po kojem igraču hajduka se naziva najpopularnija pjesma splitske grupe Disconnect,Marko Livaja,false,false
 31,1,Sport,200,Koji je nadimak popularnog NBA košarkaša Lebrona Jamesa?,King (kralj),false,false
 32,1,Sport,300,Hrvatski sportaš koji je osvojio zlatnu medalju na Europskom prvenstvu u bacanju diska 2022.,Sandra Perković (Elkasević),false,false
-33,1,Sport,400,"U kom sportu se koristi termin ""birdie""?",golf,false,false
+33,1,Sport,400,U kom sportu se koristi termin "birdie"?,golf,false,false,,,,,,false,,,false,,,false,,,false,,,false,,,false
 34,1,Sport,500,Koji je hrvatski vaterpolski klub najtrofejniji u povijesti?,Mladost,false,false
