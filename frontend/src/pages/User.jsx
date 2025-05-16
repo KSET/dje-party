@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-const URL = "http://10.30.1.59:3001"
-
+const URL = import.meta.env.VITE_SERVER_URL
 const socket = io(`${URL}`);
 
 export default function User({ username }) {
