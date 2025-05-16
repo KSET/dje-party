@@ -7,18 +7,25 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const session = require('express-session');
 const path = require('path');
-const { EventEmitter } = require('stream');
 const e = require('express');
 
 const app = express();
 const server = http.createServer(app);
+app.use(bodyParser.json());
 
+const { EventEmitter } = require('stream');
 const emitter = new EventEmitter()
 emitter.setMaxListeners(0)
 
+let approvedMessages = [];
+let globalAllowed = false;
+let playerPoints = {};
+
+const URL = "http://10.30.1.59"
+const PORT = 3001;
 
 const io = new Server(server, {
-  cors: { origin: 'http://localhost:5173', methods: ['GET', 'POST'] }
+  cors: { origin: `${URL}:5173`, methods: ['GET', 'POST'] }
 });
 
 // Load users from CSV
@@ -37,18 +44,10 @@ function loadUsersFromCSV(filePath) {
 let users = loadUsersFromCSV('./users.csv');
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Adjust this to match your frontend's URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust allowed methods as needed
-  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+  origin: `${URL}:5173`,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
-
-app.use(bodyParser.json());
-
-let approvedMessages = [];
-let globalAllowed = false;
-
-
-const PORT = 3001;
 
 function resetAnsweredFields() {
   const questions = [];
@@ -75,6 +74,10 @@ function resetAnsweredFields() {
 }
 resetAnsweredFields()
 
+app.get("/", (req, res) => {
+  return res.status(200).send("OK!");
+})
+
 app.get("/api/questions", (req, res) => {
   const filePath = path.join(__dirname, "questions.csv");
   fs.readFile(filePath, "utf8", (err, data) => {
@@ -97,7 +100,7 @@ app.use(session({
   secret: 'djeparty',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Set to true if using HTTPS
+  cookie: { secure: false }
 }));
 
 app.post('/login', (req, res) => {
@@ -128,8 +131,6 @@ app.post('/add-user', (req, res) => {
     res.status(403).json({ success: false });
   }
 });
-
-let playerPoints = {};
 
 io.on('connection', (socket) => {
   socket.on('login_user', (username) => {

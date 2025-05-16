@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+const URL = "http://10.30.1.59:3001"
+
+const socket = io(`${URL}`);
 
 export default function User({ username }) {
   const [message, setMessage] = useState('');

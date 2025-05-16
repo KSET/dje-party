@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import "./Display.css";
 
-const socket = io("http://localhost:3001");
+const URL = import.meta.env.VITE_SERVER_URL
+
+const socket = io(`${URL}`);
 
 export default function Admin() {
   const [questions, setQuestions] = useState([]);
@@ -25,7 +27,7 @@ export default function Admin() {
 
   // Fetch questions from the backend
   useEffect(() => {
-    fetch("http://localhost:3001/api/questions")
+    fetch(`${URL}/api/questions`)
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data);

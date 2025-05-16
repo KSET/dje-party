@@ -6,12 +6,13 @@ export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const URL = import.meta.env.VITE_SERVER_URL
+
   const login = async () => {
     if (username === 'display')
       return onLogin('display', 'display');
     try {
-      console.log("ide post u login")
-      const res = await axios.post('http://localhost:3001/login', 
+      const res = await axios.post(`${URL}/login`, 
         { username, password }, 
         { withCredentials: true } // Include credentials in the request
       );

@@ -10,8 +10,10 @@ export default function App() {
   const [role, setRole] = useState('');
   const [username, setUsername] = useState('');
 
+  const URL = import.meta.env.VITE_SERVER_URL
+
   useEffect(() => {
-    axios.get('http://localhost:3001/session', { withCredentials: true })
+    axios.get(`${URL}/session`, { withCredentials: true })
       .then(res => {
         const { username, role } = res.data;
         setRole(role);
@@ -26,6 +28,8 @@ export default function App() {
   if (!loggedIn) {
     return <Login onLogin={(r, u) => { setRole(r); setUsername(u); setLoggedIn(true); }} />;
   }
+
+
 
   if (role === 'admin') return <Admin />;
   if (role === 'display') return <Display />;
