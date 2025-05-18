@@ -20,6 +20,9 @@ export default function Admin() {
   const [display, setDisplay] = useState('');
   const [menuDisplay, setMenuDisplay] = useState(true);
 
+  // Switch between display modes
+
+
   // Register to socket
   useEffect(() => {
     socket.emit("admin_join");

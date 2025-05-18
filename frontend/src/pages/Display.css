@@ -236,3 +236,14 @@ button:disabled:hover {
   overflow-y: auto;
   overflow-x: auto;
 }
+
+.user-panel {
+  margin: 0 20px;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.user-panel > h3 {
+  margin: 0;
+}
