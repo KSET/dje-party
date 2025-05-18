@@ -99,6 +99,7 @@ app.post('/api/answer/:id', (req, res) => {
 });
 
 app.post('/api/user', (req, res) => {
+  console.log(req.body)
   let username = req.body.username;
   let password = req.body.password;
   let display = req.body.display;
@@ -112,8 +113,9 @@ app.post('/api/user', (req, res) => {
 })
 
 app.get('/api/points', (req, res) => {
-  db.all(`select display, points from user`, [], (err, rows) => {
+  db.all(`select username, display, points from user`, [], (err, rows) => {
     if (err) { console.log(err) }
+    console.log(rows)
     res.json(rows)
   })
 })
@@ -139,7 +141,7 @@ app.get("/api/questions", (req, res) => {
       .filter((row) => row.trim() !== "")
       .map((row) => {
         const [ id, round, category, price, question, answer, double, answered ] =
-          row.split(",");
+          row.split(";;");
         return { id, round, category, price, question, answer, double, answered };
       });
     res.json(questions);

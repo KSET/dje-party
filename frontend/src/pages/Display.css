@@ -198,6 +198,8 @@ button:disabled:hover {
 
 .top-panel {
   padding: 0 20px;
+  display: flex;
+  flex-direction: row;
 }
 
 .login-container {

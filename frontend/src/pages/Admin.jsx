@@ -14,6 +14,12 @@ export default function Admin() {
   const [hasRegisteredVotes, setHasRegisteredVotes] = useState(false);
   const [readQuestions, setReadQuestions] = useState(new Set());
 
+  // New user registration
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [display, setDisplay] = useState('');
+  const [menuDisplay, setMenuDisplay] = useState(true);
+
   // Register to socket
   useEffect(() => {
     socket.emit("admin_join");
@@ -25,7 +31,6 @@ export default function Admin() {
     return () => socket.off("can_send_update");
   }, []);
 
-  // Fetch questions from the backend
   useEffect(() => {
     fetch(`${URL}/api/questions`)
       .then((response) => response.json())
@@ -35,7 +40,6 @@ export default function Admin() {
         setReadQuestions(new Set(answeredIndices));
       })
       .catch((error) => console.error("Error fetching questions:", error));
-    fetch(`${URL}/api/questions/1`)
   }, []);
 
   // Receive answer from player
@@ -103,6 +107,25 @@ export default function Admin() {
     setHasRegisteredVotes(true); // Mark votes as registered
   };
 
+  // Register new users
+  const login = async () => {
+    const response = await fetch(`${URL}/api/user`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "username": username,
+        "password": password,
+        "display": display
+      })
+    });
+    const data = await response.text()
+    alert(data);
+
+    setUsername('');
+    setPassword('');
+    setDisplay('');
+  }
+
   const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions = categories.map((category) =>
     questions.filter((q) => q.category === category)
@@ -112,6 +135,15 @@ export default function Admin() {
     <div>
       <div className="top-panel">
         <h2>Đe Party konzola</h2>
+        <button onClick={() => setMenuDisplay(!menuDisplay)}>User mgmt</button>
+        <p>1 2 3</p>
+      </div>
+      <div className="user-panel" hidden={menuDisplay}>
+        <h3>Dodavanje korisnika</h3>
+        <input placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+        <input placeholder="Lozinka" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+        <input placeholder="Display ime" value={display} onChange={e => setDisplay(e.target.value)} />
+        <button onClick={login}>Prijava novog korisnika</button>
       </div>
       <div className="question-panel">
         <div className="jeopardy-grid">
