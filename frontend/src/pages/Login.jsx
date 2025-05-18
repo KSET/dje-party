@@ -14,7 +14,7 @@ export default function Login({ onLogin }) {
     try {
       const res = await axios.post(`${URL}/login`, 
         { username, password }, 
-        { withCredentials: true } // Include credentials in the request
+        { withCredentials: true }
       );
       if (res.data.success) {
         onLogin(res.data.role, username);

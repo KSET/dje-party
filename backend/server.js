@@ -99,7 +99,6 @@ app.post('/api/answer/:id', (req, res) => {
 });
 
 app.post('/api/user', (req, res) => {
-  console.log(req.body)
   let username = req.body.username;
   let password = req.body.password;
   let display = req.body.display;
@@ -115,7 +114,6 @@ app.post('/api/user', (req, res) => {
 app.get('/api/points', (req, res) => {
   db.all(`select username, display, points from user`, [], (err, rows) => {
     if (err) { console.log(err) }
-    console.log(rows)
     res.json(rows)
   })
 })
@@ -157,13 +155,17 @@ app.use(session({
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  const user = users[username];
-  if (user && user.password === password) {
-    req.session.user = { username, role: user.role };
-    res.json({ success: true, role: user.role });
-  } else {
-    res.status(401).json({ success: false });
-  }
+  db.all(`select password, role from user where username = ?`, [username], (err, rows) => {
+    if (err) { console.log(err); }
+    else {
+      if (rows[0].password === password) {
+        req.session.user = {username, role: rows[0].role}
+        res.json({ success: true, role: rows[0].role})
+      } else {
+        res.status(401).json({ success: false })
+      }
+    }
+  })
 });
 
 app.get('/session', (req, res) => {
@@ -204,7 +206,6 @@ io.on('connection', (socket) => {
       playerPoints[username] += points;
       io.to('admin').emit('points_updated', { username, points: playerPoints[username] });
     }
-    console.log(playerPoints)
   });
 
   socket.on('admin_join', () => {
