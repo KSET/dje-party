@@ -21,7 +21,7 @@ export default function Admin() {
   const [menuDisplay, setMenuDisplay] = useState(true);
 
   // Switch between display modes
-
+  const [active, setActive] = useState(1);
 
   // Register to socket
   useEffect(() => {
@@ -35,11 +35,11 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
-    fetch(`${URL}/api/questions`)
+    fetch(`${URL}/api/questions/1`)
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data);
-        const answeredIndices = data.filter((q) => q.answered == "true").map((q) => q.id);
+        const answeredIndices = data.filter((q) => q.answered == 1).map((q) => q.id);
         setReadQuestions(new Set(answeredIndices));
       })
       .catch((error) => console.error("Error fetching questions:", error));
@@ -69,8 +69,6 @@ export default function Admin() {
 
     if (popupData?.id) {
       setReadQuestions((prev) => new Set([...prev, popupData.id]));
-      // old way
-      socket.emit("update_csv", { id: popupData.id });
 
       // new way
       const response = fetch(`${URL}/api/answer/${popupData.id}`, {
@@ -84,6 +82,11 @@ export default function Admin() {
 
     socket.emit("mark_as_read", popupData.id)
   };
+
+  const handleAdminSwitch = (id) => {
+    setActive(id);
+    socket.emit("display_switch", id)
+  }
 
   // Send points to the backend
   const handleRegisterPoints = () => {
@@ -138,8 +141,13 @@ export default function Admin() {
     <div>
       <div className="top-panel">
         <h2>Đe Party konzola</h2>
-        <button onClick={() => setMenuDisplay(!menuDisplay)}>User mgmt</button>
-        <p>1 2 3</p>
+        <button className="mgmt-button" onClick={() => setMenuDisplay(!menuDisplay)}>User mgmt</button>
+        <div className="switch-container">
+          <p className={`${active == 1 ? "active" : ""}`} onClick={() => handleAdminSwitch(1)}>Početni</p>
+          <p className={`${active == 2 ? "active" : ""}`} onClick={() => handleAdminSwitch(2)}>1. krug</p>
+          <p className={`${active == 3 ? "active" : ""}`} onClick={() => handleAdminSwitch(3)}>2. krug</p>
+          <p className={`${active == 4 ? "active" : ""}`} onClick={() => handleAdminSwitch(4)}>Bodovi</p>
+        </div>
       </div>
       <div className="user-panel" hidden={menuDisplay}>
         <h3>Dodavanje korisnika</h3>

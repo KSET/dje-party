@@ -3,11 +3,7 @@ const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const bodyParser = require('body-parser');
-const fs = require("fs");
-const csv = require("csv-parser");
 const session = require('express-session');
-const path = require('path');
-const e = require('express');
 require('dotenv').config({ path: '../frontend/.env' });
 
 const sqlite3 = require('sqlite3').verbose();
@@ -32,51 +28,11 @@ const io = new Server(server, {
   cors: { origin: `${URL}:5173`, methods: ['GET', 'POST'] }
 });
 
-// Load users from CSV
-function loadUsersFromCSV(filePath) {
-  const loadedUsers = {};
-  fs.createReadStream(filePath)
-    .pipe(csv())
-    .on('data', (row) => {
-      loadedUsers[row.username] = { password: row.password, role: row.role };
-    })
-    .on('end', () => {
-      console.log('Users loaded from CSV');
-    });
-  return loadedUsers;
-}
-let users = loadUsersFromCSV('./users.csv');
-
 app.use(cors({
   origin: `${URL}:5173`,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
-}));
-
-function resetAnsweredFields() {
-  const questions = [];
-  let headers = [];
-  let path = "./questions.csv";
-
-  fs.createReadStream(path)
-    .pipe(csv())
-    .on("headers", (headerList) => {
-      headers = headerList;
-    })
-    .on("data", (row) => {
-      row.answered = "false";
-      questions.push(row);
-    })
-    .on("end", () => {
-      const output = [
-        headers.join(","),
-        ...questions.map(q => headers.map(h => q[h]).join(","))
-      ].join("\n");
-      fs.writeFileSync(path, output);
-      console.log("All 'answered' fields reset to false.");
-    });
-}
-resetAnsweredFields()
+}))
 
 app.get("/", (req, res) => {
   return res.status(200).send("OK!");
@@ -128,24 +84,6 @@ app.post('/api/points', (req, res) => {
   })
 })
 
-app.get("/api/questions", (req, res) => {
-  const filePath = path.join(__dirname, "questions.csv");
-  fs.readFile(filePath, "utf8", (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Unable to read file" });
-    }
-    const rows = data.split("\n").slice(1);
-    const questions = rows
-      .filter((row) => row.trim() !== "")
-      .map((row) => {
-        const [ id, round, category, price, question, answer, double, answered ] =
-          row.split(";;");
-        return { id, round, category, price, question, answer, double, answered };
-      });
-    res.json(questions);
-  });
-});
-
 app.use(session({
   secret: 'djeparty',
   resave: false,
@@ -173,16 +111,6 @@ app.get('/session', (req, res) => {
     res.json(req.session.user);
   } else {
     res.status(401).json({ success: false });
-  }
-});
-
-app.post('/add-user', (req, res) => {
-  const { adminUser, adminPass, newUser, newPass } = req.body;
-  if (users[adminUser]?.password === adminPass && users[adminUser].role === 'admin') {
-    users[newUser] = { password: newPass, role: 'user' };
-    res.json({ success: true });
-  } else {
-    res.status(403).json({ success: false });
   }
 });
 
@@ -242,34 +170,9 @@ io.on('connection', (socket) => {
     io.to('display').emit('mark_as_read', questionId);
   });
 
-  socket.on("update_csv", ({ id }) => {
-    const fs = require("fs");
-    const csv = require("csv-parser");
-    const path = "./questions.csv";
-
-    const questions = [];
-    let headers = [];
-
-    fs.createReadStream(path)
-      .pipe(csv())
-      .on("headers", (headerList) => {
-        headers = headerList;
-      })
-      .on("data", (row) => {
-        if (row.id === id.toString()) {
-          row.answered = true;
-        }
-        questions.push(row);
-      })
-      .on("end", () => {
-        const output = [
-          headers.join(","),
-          ...questions.map(q => headers.map(h => q[h]).join(","))
-        ].join("\n");
-        fs.writeFileSync(path, output);
-      });
-});
-
+  socket.on('display_switch', (id) => {
+    io.to('display').emit('display_switch', id);
+  })
 });
 
 server.listen(PORT, () => {
