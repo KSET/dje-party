@@ -35,6 +35,7 @@ export default function Admin() {
         setReadQuestions(new Set(answeredIndices));
       })
       .catch((error) => console.error("Error fetching questions:", error));
+    fetch(`${URL}/api/questions/1`)
   }, []);
 
   // Receive answer from player
@@ -61,7 +62,17 @@ export default function Admin() {
 
     if (popupData?.id) {
       setReadQuestions((prev) => new Set([...prev, popupData.id]));
+      // old way
       socket.emit("update_csv", { id: popupData.id });
+
+      // new way
+      const response = fetch(`${URL}/api/answer/${popupData.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      });
     }
 
     socket.emit("mark_as_read", popupData.id)
@@ -76,6 +87,16 @@ export default function Admin() {
 
       if (username && points) {
         socket.emit("update_points", { username, points });
+        fetch(`${URL}/api/points`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            'username': username,
+            'points': points
+          })
+        });
       }
     });
     setUserVotes([]);

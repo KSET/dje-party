@@ -8,7 +8,10 @@ const csv = require("csv-parser");
 const session = require('express-session');
 const path = require('path');
 const e = require('express');
-require('dotenv').config({ path: '../frontend/.env' }); 
+require('dotenv').config({ path: '../frontend/.env' });
+
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./mydb.sqlite');
 
 const app = express();
 const server = http.createServer(app);
@@ -77,6 +80,52 @@ resetAnsweredFields()
 
 app.get("/", (req, res) => {
   return res.status(200).send("OK!");
+})
+
+app.get('/api/questions/:round', (req, res) => {
+  round = parseInt(req.params.round)
+  db.all(`select * from question where round = ${round}`, [], (err, rows) => {
+    if (err) { console.log(err) }
+    res.json(rows)
+  })
+});
+
+app.post('/api/answer/:id', (req, res) => {
+  id = req.params.id
+  db.all(`update question set answered = 1 where id = ${id}`, [], (err, _) => {
+    if (err) { console.log(err) }
+    else { res.status(200).send("Question marked as read.") }
+  })
+});
+
+app.post('/api/user', (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+  let display = req.body.display;
+  
+  db.all(`insert into user (username, password, display, role, points)
+    values (?, ?, ?, "user", 0)`,
+    [username, password, display], (err, _) => {
+    if (err) { console.log(err) }
+    else { res.status(200).send("Adding a user successful") }
+  })
+})
+
+app.get('/api/points', (req, res) => {
+  db.all(`select display, points from user`, [], (err, rows) => {
+    if (err) { console.log(err) }
+    res.json(rows)
+  })
+})
+
+app.post('/api/points', (req, res) => {
+  let username = req.body.username;
+  let points = req.body.points;
+
+  db.all(`update user set points = points + ? where username = ?`, [points, username], (err, _) => {
+    if (err) { console.log(err) }
+    else {return res.status(200).send("Points updated")}
+  })
 })
 
 app.get("/api/questions", (req, res) => {

@@ -24,6 +24,7 @@ export default function User({ username }) {
   const sendMessage = () => {
     if (!message.trim()) return;
     socket.emit('user_message', { username, msg: message });
+    setCanSend(false);
     setMessage('');
   };
 
