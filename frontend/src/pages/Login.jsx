@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import "./Display.css";
+import "./Login.css";
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -24,12 +24,27 @@ export default function Login({ onLogin }) {
     }
   };
 
-  return (
-    <div className='login-container'>
-      <h2>Login</h2>
-      <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
-      <input placeholder="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={login}>Prijava</button>
+ return (
+  <div className="app-container">
+    <header>app header tu</header>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Đe Party - login</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <button onClick={login}>Prijava</button>
+      </div>
     </div>
-  );
+  </div>
+);
 }
