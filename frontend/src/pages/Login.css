@@ -83,3 +83,7 @@ header {
 button {
   -webkit-tap-highlight-color: transparent;
 }
+
+header > img {
+    height: 7vh;
+}

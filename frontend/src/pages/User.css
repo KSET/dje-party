@@ -81,3 +81,7 @@
 .voting-message {
     font-size: 40px;
 }
+
+header > img {
+    height: 7vh;
+}

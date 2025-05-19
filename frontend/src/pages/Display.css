@@ -34,6 +34,11 @@ body {
   color: white;
 }
 
+.logo-container > * {
+  width: 100vw;
+  height: 100vh;
+}
+
 .switch-container {
   padding: 20px;
 }

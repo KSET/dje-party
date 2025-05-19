@@ -70,7 +70,9 @@ export default function User({ username }) {
 
   return (
     <div className='user-container-full'>
-    <header>app header tu</header>
+      <header>
+        <img src='../../assets/logo.png'></img>
+      </header>
       <div className='user-container'>
         <div className='user-greet'>
           <p>Pozdrav, {username}!</p>

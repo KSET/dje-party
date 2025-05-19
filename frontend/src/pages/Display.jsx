@@ -71,7 +71,7 @@ export default function Display() {
     socket.on('close_question', handleCloseQuestion);
     return () => socket.off('close_question', handleCloseQuestion);
   }, []);
-  
+
   useEffect(() => {
     const handleUndoOpen = () => {setPopupData(null);}
     socket.on('undo_open', handleUndoOpen);
@@ -131,7 +131,7 @@ export default function Display() {
     <div>
       {active === 1 && (
         <div className="logo-container">
-          ovdje će doć slika
+          <img src='../../assets/splash.png'></img>
         </div>
       )}
       {(active === 2 || active == 3) && (
