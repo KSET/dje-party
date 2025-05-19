@@ -11,6 +11,7 @@ services:
       - "3001:3001"
     volumes:
       - ./backend:/app/backend
+      - /app/backend/node_modules
     depends_on: []
 
   frontend:
@@ -23,4 +24,5 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app/frontend
+      - /app/frontend/node_modules
     depends_on: []
