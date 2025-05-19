@@ -87,6 +87,11 @@ export default function Admin() {
     socket.emit("mark_as_read", popupData.id)
   };
 
+  const undoOpenPopup = () => {
+    setPopupData(null);
+    socket.emit('undo_open')
+  }
+
   const handleAdminSwitch = (id) => {
     setActive(id);
     socket.emit("display_switch", id)
@@ -100,7 +105,6 @@ export default function Admin() {
       const points = parseInt(checkbox.getAttribute("data-points"));
 
       if (username && points) {
-        socket.emit("update_points", { username, points });
         fetch(`${URL}/api/points`, {
           method: 'POST',
           headers: {
@@ -207,6 +211,9 @@ export default function Admin() {
         {popupData && (
           <div className="popup-overlay">
             <div className="popup">
+              <div className="admin-popup-closer">
+                <button onClick={undoOpenPopup}><b>X</b></button>
+              </div>
               <div className="admin-popup-content">
                 <div>
                   <p>{popupData.category}, <b>{popupData.price}</b> bodova</p>
@@ -217,15 +224,24 @@ export default function Admin() {
                 <div>
                   <h3>Odgovori</h3>
                   <div className="scrollable">
+                    <div className="points-row" style={{ paddingBottom: '10px', margin: '10px 0', borderBottom: "2px white solid" }}>
+                      <span className="points-username">Korisničko ime</span>
+                      <span className="points-answer">Odgovor</span>
+                      <span className="points-vote">Glas</span>
+                    </div>
                     {userVotes.map((vote, index) => (
-                      <p key={index}>
-                      {vote.username}: {vote.msg}
-                      <input
-                        type="checkbox"
-                        data-username={vote.username}
-                        data-points={popupData.price}
-                      />
-                      </p>
+                      <div key={index} className="points-row">
+                        <span className="points-username">{vote.username}</span>
+                        <span className="points-answer">{vote.msg}</span>
+                        <span className="points-vote">
+                          <input
+                          type="checkbox"
+                          data-username={vote.username}
+                          data-points={popupData.price}
+                          className="custom-checkbox"
+                        />
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -251,10 +267,10 @@ export default function Admin() {
                   </button>
                 )}
                 <button onClick={() => socket.emit("show_answer", popupData)}>Prikaži odgovor</button>
-                <button onClick={handleRegisterPoints} disabled={hasRegisteredVotes}>
+                <button onClick={() => handleRegisterPoints(popupData.double)} disabled={hasRegisteredVotes}>
                     Spremi bodove
                   </button>
-                <button onClick={() => { handleClosePopup(popupData.double) }} disabled={!hasRegisteredVotes}>
+                <button onClick={handleClosePopup} disabled={!hasRegisteredVotes}>
                   Zatvori pitanje
                 </button>
               </div>

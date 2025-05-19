@@ -213,6 +213,24 @@ body {
   min-height: 240px;
 }
 
+.admin-popup-closer {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.admin-popup-closer > button {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 5px;
+  margin: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.admin-popup-closer > button:hover {
+  background-color: rgb(210, 112, 129)
+}
+
 .btn-grn {
   background-color: rgb(148, 176, 148);
 }
@@ -344,4 +362,39 @@ button:disabled:hover {
 .points-row {
   display: flex;
   justify-content: space-between;
+}
+
+.custom-checkbox {
+  margin-left: 10px;
+  height: 20px;
+  width: 20px;
+}
+
+.custom-checkbox:hover {
+  cursor: pointer;
+}
+
+.points-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.points-row > span {
+  display: block;
+}
+
+.points-username {
+  width: 30%;
+  text-overflow: "...";
+  overflow: hidden;
+}
+
+.points-answer {
+  width: 60%;
+  text-overflow: "...";
+  overflow: hidden;
+}
+
+.points-vote {
+  width: 10%;
 }

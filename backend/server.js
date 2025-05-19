@@ -14,12 +14,12 @@ const server = http.createServer(app);
 app.use(bodyParser.json());
 
 const { EventEmitter } = require('stream');
+const { type } = require('os');
 const emitter = new EventEmitter()
 emitter.setMaxListeners(0)
 
 let approvedMessages = [];
 let globalAllowed = false;
-let playerPoints = {};
 
 const URL = process.env.VITE_SERVER_URL.slice(0, -5)
 const PORT = 3001;
@@ -74,7 +74,7 @@ app.get('/api/points', (req, res) => {
   })
 })
 
-app.post('/api/points', (req, res) => {
+app.post('/api/points', (req, res) => {  
   let username = req.body.username;
   let points = req.body.points;
 
@@ -117,9 +117,6 @@ app.get('/session', (req, res) => {
 io.on('connection', (socket) => {
   socket.on('login_user', (username) => {
     socket.username = username;
-    if (!playerPoints[username]) {
-      playerPoints[username] = 0;
-    }
     socket.emit('permission_status', globalAllowed);
   });
 
@@ -129,18 +126,10 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('update_points', ({ username, points }) => {
-    if (playerPoints[username] !== undefined) {
-      playerPoints[username] += points;
-      io.to('admin').emit('points_updated', { username, points: playerPoints[username] });
-    }
-  });
-
   socket.on('admin_join', () => {
     socket.join('admin');
     socket.emit('approved_messages', approvedMessages);
     socket.emit('global_allowed', globalAllowed);
-    socket.emit('player_points', playerPoints);
   });
 
   socket.on('set_global_permission', (allowed) => {
@@ -176,6 +165,10 @@ io.on('connection', (socket) => {
 
   socket.on('open_points', () => {
     io.to('display').emit('open_points');
+  })
+
+  socket.on('undo_open', () => {
+    io.to('display').emit('undo_open')
   })
 });
 

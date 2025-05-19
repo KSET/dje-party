@@ -3,7 +3,6 @@ body, html {
   padding: 0;
   height: 100%;
   font-family: 'Fjalla', sans-serif;
-  overflow: hidden;
 }
 
 .app-container {
@@ -79,4 +78,8 @@ header {
 
 .login-box button:hover {
   background-color: #0056b3;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
 }

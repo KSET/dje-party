@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
+import "./User.css";
 
 const URL = import.meta.env.VITE_SERVER_URL
 const socket = io(`${URL}`);
@@ -17,6 +18,7 @@ export default function User({ username }) {
   useEffect(() => {
     socket.emit('login_user', username);
     const handlePermission = (allowed) => {
+      fetchPoints();
       setCanSend(allowed);
       setActiveCountdown(allowed);
       if (allowed) startCountdown();
@@ -28,14 +30,6 @@ export default function User({ username }) {
   }, [username]);
 
   useEffect(() => {
-    const fetchPoints = async () => {
-      const response = await fetch(`${URL}/api/points`)
-      const data = await response.json()
-      const _user = data.find(user => user.username === username);
-      const _points = _user ? _user.points : null;
-      setUserPoints(_points);
-    }
-
     fetchPoints();
   }, []);
 
@@ -45,7 +39,7 @@ export default function User({ username }) {
     socket.emit('user_message', { username, msg: message });
     setCanSend(false);
     setMessage('');
-    alert("Odgovoreno!")
+    alert("Hvala na odgovoru!")
   };
 
   const startCountdown = () => {
@@ -65,20 +59,44 @@ export default function User({ username }) {
     }, 1000);
   };
 
+  const fetchPoints = async () => {
+    const response = await fetch(`${URL}/api/points`)
+    const data = await response.json()
+    console.log(data)
+    const _user = data.find(user => user.username === username);
+    const _points = _user ? _user.points : null;
+    setUserPoints(_points);
+  }
+
   return (
     <div className='user-container-full'>
+    <header>app header tu</header>
       <div className='user-container'>
-        <p style={{ color: canSend ? 'green' : 'red' }}>
-          {canSend ? "You can send messages" : "You are blocked from sending messages"}
+        <div className='user-greet'>
+          <p>Pozdrav, {username}!</p>
+          <p>Stanje bodova: {userPoints}</p>
+        </div>
+        <p className='voting-message'>
+          {canSend ?
+            <p>
+              Odgovaranje je{' '}
+              <span style={{ color: 'lightgreen' }}>otvoreno</span>
+              {activeCountdown && ` ${timer} sekundi!`}
+            </p>
+            :
+            <p>
+              Odgovaranje je trenutno{' '}
+              <span style={{ color: 'red'}}>zatvoreno</span>!
+            </p>
+          }
         </p>
-        {activeCountdown && (<p>{timer}</p>)}
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Enter message"
+          placeholder={canSend ? "Odgovor..." : ""}
           disabled={!canSend}
         />
-        <button onClick={sendMessage} disabled={!canSend}>Send</button>
+        <button onClick={sendMessage} disabled={!canSend}>Odgovori!</button>
       </div>
     </div>
   );

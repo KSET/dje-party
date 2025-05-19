@@ -25,7 +25,7 @@ export default function Login({ onLogin }) {
   };
 
  return (
-  <div className="app-container">
+  <div className="app-container" style={{ overflow: 'hidden'}}>
     <header>app header tu</header>
     <div className="login-container">
       <div className="login-box">
