@@ -4,7 +4,7 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-require('dotenv').config({ path: '../frontend/.env' });
+require('dotenv').config({ path: '.env' });
 
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./mydb.sqlite');
@@ -14,14 +14,15 @@ const server = http.createServer(app);
 app.use(bodyParser.json());
 
 const { EventEmitter } = require('stream');
-const { type } = require('os');
+const path = require('path')
 const emitter = new EventEmitter()
 emitter.setMaxListeners(0)
 
 let approvedMessages = [];
 let globalAllowed = false;
 
-const URL = process.env.VITE_SERVER_URL.slice(0, -5)
+
+const URL = process.env.SERVER_URL.slice(0, -5)
 const PORT = 3001;
 
 const io = new Server(server, {
