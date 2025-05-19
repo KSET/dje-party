@@ -22,12 +22,14 @@ let approvedMessages = [];
 let globalAllowed = false;
 
 
-const URL = process.env.SERVER_URL.slice(0, -5)
+SERVER_URL="http://localhost"
 const PORT = 3001;
 
 const io = new Server(server, {
   cors: { origin: `${URL}:5173`, methods: ['GET', 'POST'] }
 });
+
+app.use(express.static('../frontend/dist'))
 
 app.use(cors({
   origin: `${URL}:5173`,

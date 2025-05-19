@@ -189,8 +189,8 @@ export default function Display() {
           {popupData && (
             <div className="popup-overlay">
               <div className="popup">
-                {popupData.double == 0 ?
-                  <div className="popup-question-double shadow">Dupli bodovi!</div>
+                {popupData.double == 1 ?
+                  <div className="popup-question-double shadow">Bodovi x2</div>
                   : <></>
                 }
                 <p className="popup-question shadow">{popupData.question}</p>

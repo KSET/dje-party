@@ -1,21 +1,19 @@
-# Use Node base image
 FROM node:23
-
-# Set working dir
 WORKDIR /app
 
-# Copy backend
+RUN npm install -g concurrently
+
+COPY frontend ./frontend
+WORKDIR /app/frontend
+RUN npm install
+
+WORKDIR /app
 COPY backend ./backend
-
-# Copy frontend build (dist folder only)
-COPY frontend/dist ./frontend/dist
-
-# Install backend dependencies
 WORKDIR /app/backend
 RUN npm install
 
-# Expose port
-EXPOSE 3000
+WORKDIR /app
 
-# Start server
-CMD ["node", "server.js"]
+EXPOSE 5173 3001
+
+CMD concurrently "cd backend && node server.js" "cd frontend && npm run host"
