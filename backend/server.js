@@ -22,7 +22,7 @@ let approvedMessages = [];
 let globalAllowed = false;
 
 
-SERVER_URL="http://localhost"
+const URL="http://localhost"
 const PORT = 3001;
 
 const io = new Server(server, {
