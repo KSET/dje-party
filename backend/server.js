@@ -173,6 +173,10 @@ io.on('connection', (socket) => {
   socket.on('display_switch', (id) => {
     io.to('display').emit('display_switch', id);
   })
+
+  socket.on('open_points', () => {
+    io.to('display').emit('open_points');
+  })
 });
 
 server.listen(PORT, () => {

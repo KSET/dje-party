@@ -142,11 +142,32 @@ body {
   padding: auto;
 }
 
+.popup-question-double {
+  min-height: 50px;
+  font-size: 40px;
+  padding: 0;
+  font-family: Korinna;
+  text-transform: uppercase;
+  color: #f3a951;
+}
+
+.popup-question-timer {
+  min-height: 72px;
+  font-size: 60px;
+  padding: 0;
+  font-family: Korinna;
+  text-transform: uppercase;
+}
+
 .question-box {
   border: solid black 1px;
   border-radius: 5px;
   margin: 5px 0;
   padding: 0 5px;
+}
+
+.question-box-double {
+  border: solid #f3a951 1px;
 }
 
 .question-box:hover{
@@ -230,6 +251,7 @@ button:disabled:hover {
   padding: 0 20px;
   display: flex;
   flex-direction: row;
+  text-align: center;
 }
 
 .login-container {
@@ -280,4 +302,46 @@ button:disabled:hover {
 
 .mgmt-button {
   height: 50px;
+  margin: 0 20px;
+}
+
+.user-container-full {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.user-container {
+  max-width: 480px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  font-size: 4rem;
+}
+
+.user-container > input,
+.user-container > button {
+  font-size: 2rem;
+}
+
+.points-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #00009e;
+  display: flex;
+}
+
+.points-container > div {
+  margin: auto;
+  min-width: 40%;
+  font-size: 45px;
+  font-family: Korinna;
+  text-transform: uppercase;
+  color: #f3a951;
+}
+
+.points-row {
+  display: flex;
+  justify-content: space-between;
 }

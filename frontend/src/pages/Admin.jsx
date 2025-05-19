@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import "./Display.css";
 
@@ -22,6 +22,10 @@ export default function Admin() {
 
   // Switch between display modes
   const [active, setActive] = useState(1);
+
+  // 30 second timers
+  const [timer, setTimer] = useState(30)
+  const intervalRef = useRef(null)
 
   // Register to socket
   useEffect(() => {
@@ -89,7 +93,7 @@ export default function Admin() {
   }
 
   // Send points to the backend
-  const handleRegisterPoints = () => {
+  const handleRegisterPoints = (double_points) => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
     checkboxes.forEach((checkbox) => {
       const username = checkbox.getAttribute("data-username");
@@ -104,7 +108,7 @@ export default function Admin() {
           },
           body: JSON.stringify({
             'username': username,
-            'points': points
+            'points': points * (1 + double_points)
           })
         });
       }
@@ -132,6 +136,23 @@ export default function Admin() {
     setDisplay('');
   }
 
+  const startCountdown = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    setTimer(30);
+    
+    intervalRef.current = setInterval(() => {
+      setTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions = categories.map((category) =>
     questions.filter((q) => q.category === category)
@@ -141,12 +162,12 @@ export default function Admin() {
     <div>
       <div className="top-panel">
         <h2>Đe Party konzola</h2>
-        <button className="mgmt-button" onClick={() => setMenuDisplay(!menuDisplay)}>User mgmt</button>
+        <button className="mgmt-button" onClick={() => setMenuDisplay(!menuDisplay)}>Korisnici</button>
         <div className="switch-container">
           <p className={`${active == 1 ? "active" : ""}`} onClick={() => handleAdminSwitch(1)}>Početni</p>
           <p className={`${active == 2 ? "active" : ""}`} onClick={() => handleAdminSwitch(2)}>1. krug</p>
           <p className={`${active == 3 ? "active" : ""}`} onClick={() => handleAdminSwitch(3)}>2. krug</p>
-          <p className={`${active == 4 ? "active" : ""}`} onClick={() => handleAdminSwitch(4)}>Bodovi</p>
+          <p className={`${active == 4 ? "active" : ""}`} onClick={() => {handleAdminSwitch(4); socket.emit('open_points')}}>Bodovi</p>
         </div>
       </div>
       <div className="user-panel" hidden={menuDisplay}>
@@ -164,7 +185,11 @@ export default function Admin() {
               {categoryQuestions.map((q, questionIndex) => (
                 <div
                   key={questionIndex}
-                  className={`question-box ${readQuestions.has(q.id) ? "read-admin" : ""}`}
+                  className={`
+                    question-box
+                    ${readQuestions.has(q.id) ? "read-admin" : ""}
+                    ${q.double == 1 ? "question-box-double" : ""}
+                  `}
                   onClick={() => !readQuestions.has(q.id) && handleShowPopup(q)}
                 >
                   <p>
@@ -185,6 +210,7 @@ export default function Admin() {
               <div className="admin-popup-content">
                 <div>
                   <p>{popupData.category}, <b>{popupData.price}</b> bodova</p>
+                  {popupData.double == 0 ? <p><i><b>Dvostruki bodovi</b></i></p> : <></>}
                   <p>Pitanje: {popupData.question}</p>
                   <p><i>Odgovor: {popupData.answer}</i></p>
                 </div>
@@ -210,6 +236,7 @@ export default function Admin() {
                     () => {
                       socket.emit("set_global_permission", true);
                       setCanSend(true)
+                      startCountdown()
                     }}>
                     Uključi odgovore
                   </button>
@@ -220,14 +247,14 @@ export default function Admin() {
                       socket.emit("set_global_permission", false)
                       setCanSend(false)
                     }}>
-                    Isključi odgovore
+                    Isključi odgovore ({timer})
                   </button>
                 )}
                 <button onClick={() => socket.emit("show_answer", popupData)}>Prikaži odgovor</button>
                 <button onClick={handleRegisterPoints} disabled={hasRegisteredVotes}>
                     Spremi bodove
                   </button>
-                <button onClick={handleClosePopup} disabled={!hasRegisteredVotes}>
+                <button onClick={() => { handleClosePopup(popupData.double) }} disabled={!hasRegisteredVotes}>
                   Zatvori pitanje
                 </button>
               </div>

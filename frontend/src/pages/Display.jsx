@@ -1,4 +1,4 @@
-import React, { act, useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, act } from "react";
 import { io } from "socket.io-client";
 import "./Display.css";
 
@@ -13,6 +13,10 @@ export default function Display() {
   const [readQuestions, setReadQuestions] = useState(new Set());
   const [userPoints, setUserPoints] = useState([]);
   const [active, setActive] = useState(1);
+
+  const [timer, setTimer] = useState(30);
+  const [activeCountdown, setActiveCountdown] = useState(false);
+  const intervalRef = useRef(null)
 
   // Register to socket
   useEffect(() => {
@@ -33,7 +37,11 @@ export default function Display() {
 
   // Not sure tbh
   useEffect(() => {
-    socket.on('permission_status', (allowed) => setCanSend(allowed));
+    socket.on('permission_status', (allowed) => {
+      setCanSend(allowed)
+      setActiveCountdown(allowed);
+      if (allowed) startCountdown();
+    });
     return () => socket.off('permission_status');
   }, []);
 
@@ -73,17 +81,37 @@ export default function Display() {
     const updatePoints = async () => {
       const response = await fetch(`${URL}/api/points`);
       let data = await response.json();
-      data = data.filter(item => item.display !== "Administrator" && item.display !== "Display");
+      data = data
+        .filter(item => item.display !== "Administrator" && item.display !== "Display")
+        .filter(item => item.points > 0)
+        .sort((a, b) => b.points - a.points)
       setUserPoints(data);
     }
 
+    socket.on("open_points", updatePoints);
     socket.on("mark_as_read", handleMarkAsRead);
     socket.on("display_switch", (id) => {
       setActive(id);
     })
-    updatePoints();
     return () => socket.off("mark_as_read", handleMarkAsRead);
   }, []);
+
+  const startCountdown = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    setTimer(30);
+    
+    intervalRef.current = setInterval(() => {
+      setTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions1 = categories.map((category) =>
@@ -139,7 +167,14 @@ export default function Display() {
           {popupData && (
             <div className="popup-overlay">
               <div className="popup">
+                {popupData.double == 0 ?
+                  <div className="popup-question-double shadow">Dupli bodovi!</div>
+                  : <></>
+                }
                 <p className="popup-question shadow">{popupData.question}</p>
+                <div className="popup-question-timer shadow">
+                  {activeCountdown ? timer : " "}
+                </div>
               </div>
             </div>
           )}
@@ -147,9 +182,15 @@ export default function Display() {
       )}
       {active === 4 && (
         <div className="points-container">
-          {userPoints.map((user, userIndex) => (
-            <div key={userIndex}> {user.display} - {user.points} </div>
-          ))}
+          <div>
+            <p className="shadow">Bodovno stanje</p>
+            {userPoints.map((user, userIndex) => 
+              <div key={userIndex} className="points-row shadow">
+                <span> {user.display} </span>
+                <span> {user.points} </span>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

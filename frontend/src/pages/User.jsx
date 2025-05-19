@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 
 const URL = import.meta.env.VITE_SERVER_URL
@@ -9,11 +9,17 @@ export default function User({ username }) {
   const [canSend, setCanSend] = useState(true);
   const [userPoints, setUserPoints] = useState(0);
 
+  const [timer, setTimer] = useState(30);
+  const [activeCountdown, setActiveCountdown] = useState(false);
+  const intervalRef = useRef(null)
+
   // Register user /'s answering permissions
   useEffect(() => {
     socket.emit('login_user', username);
     const handlePermission = (allowed) => {
       setCanSend(allowed);
+      setActiveCountdown(allowed);
+      if (allowed) startCountdown();
     };
     socket.on('permission_status', handlePermission);
     return () => {
@@ -42,19 +48,38 @@ export default function User({ username }) {
     alert("Odgovoreno!")
   };
 
+  const startCountdown = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    setTimer(30);
+    
+    intervalRef.current = setInterval(() => {
+      setTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   return (
-    <div>
-      <h2>Welcome, {username}</h2>
-      <p style={{ color: canSend ? 'green' : 'red' }}>
-        {canSend ? "You can send messages" : "You are blocked from sending messages"}
-      </p>
-      <input
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Enter message"
-        disabled={!canSend}
-      />
-      <button onClick={sendMessage} disabled={!canSend}>Send</button>
+    <div className='user-container-full'>
+      <div className='user-container'>
+        <p style={{ color: canSend ? 'green' : 'red' }}>
+          {canSend ? "You can send messages" : "You are blocked from sending messages"}
+        </p>
+        {activeCountdown && (<p>{timer}</p>)}
+        <input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Enter message"
+          disabled={!canSend}
+        />
+        <button onClick={sendMessage} disabled={!canSend}>Send</button>
+      </div>
     </div>
   );
 }
