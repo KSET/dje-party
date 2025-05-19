@@ -1,36 +1,61 @@
-id;;round;;category;;price;;question;;answer;;double;;answered
-0;;1;;Film;;100;;"Tko je pjevao "My Heart Will Go On" u Titanicu?";;Celine Dion;;false;;false
-1;;1;;Film;;200;;Film iz 2019. koji je istovremeno snimljen na korejskom i engleskom jeziku te je osvojio Oscara za najbolji film.;;Parasite;;false;;false
-2;;1;;Film;;300;;U kojem filmu Leonardo DiCaprio glumi lika koji ulazi u snove drugih ljudi?;;Inception;;false;;false
-4;;1;;Film;;400;;Ovaj je hit benda Film iz 1981. poznat po refrenu “Zajedno...”;;Zajedno;;false;;false
-3;;1;;Film;;500;;Koje godine je bila prva dodjela nagrade Oscar?;;1929;;false;;false
-5;;1;;Gen Z;;100;;ovaj hrvatski viralni meme govori o tome kako hrvatska vlada špijunira narod;;špijuniro golubiro;;false;;false
-6;;1;;Gen Z;;200;;"Popularna aplikacija među Gen Z kojom se šalje jedna nenamještena fotka dnevno, u točno određenom trenutku.";;BeReal;;false;;false
-7;;1;;Gen Z;;300;;Ova serija popularna među mladima hrvatska je adaptacija norveške serije Skam ;;sram;;false;;false
-8;;1;;Gen Z;;400;;"Ovaj emoji Gen Z često koristi da izrazi smijeh umjesto klasičnog "plačem od smijeha" emotikona";;lubanja / plakanje (sob);;false;;false
-9;;1;;Gen Z;;500;;Ova svakidašnja radnja koristi se kao fraza za dobro obavljen posao.;;pojesti;;false;;false
-10;;1;;Grad Zagreb;;100;;Koji broj moraš znati ako šalješ razglednicu iz Zagreba ili u Zagreb?;;10000;;false;;false
-11;;1;;Grad Zagreb;;200;;Koje vozilo u Zagrebu u jednom putu pređe maksimalno 66 metara?;;uspinjača;;false;;false
-12;;1;;Grad Zagreb;;300;;kako glasi tekst na novom vizualnom identitetu grada Zagreba;;zagreb volim te!;;false;;false
-13;;1;;Grad Zagreb;;400;;U kojem se mjesecu tradicionalno održava Zagrebački maraton?;;Listopad (10.);;false;;false
-14;;1;;Grad Zagreb;;500;;U kojem je stoljeću osnovano Sveučilište u Zagrebu?;;17. stoljeće (1669.);;false;;false
-15;;1;;IT;;100;;Popularni format kompresije datoteka koji smanjuje veličinu bez gubitka sadržaja.;;ZIP;;false;;false
-16;;1;;IT;;200;;"U mrežama, ova kratica označava jedinstvenu adresu svakog uređaja spojenog na Internet.";;IP adresa;;false;;false
-17;;1;;IT;;300;;Ova je tvrtka vlasnik GitHub-a.;;Microsoft;;false;;false
-18;;1;;IT;;400;;koliko je godina skype bio u pogonu?;;21 godina;;false;;false
-19;;1;;IT;;500;;"Sigurnosni mehanizam koji se postavlja između lokalne mreže i vanjskog interneta, filtrira promet.";;Vatrozid (firewall);;false;;false
-20;;1;;Ivan;;100;;Tko je napisao Smrt Smail-age Čengića?;;Ivan Mažuranić;;false;;false
-21;;1;;Ivan;;200;;"Tko je autor djela "Kako je Potjeh tražio istinu";;Ivana Brlić-Mažuranić;;false;;false
-22;;1;;Ivan;;300;;Ovaj Ivan bio je vođa hrvatske reprezentacije 2018. i poznat po 'škaricama;;Ivan Perišić;;false;;false
-23;;1;;Ivan;;400;;Kako glasi češki oblik imena Ivan ako znamo da to ime nosi i jedan poznati golman nama susjedne države;;Jan;;false;;false
-24;;1;;Ivan;;500;;Koji nadimak se pripisuje velikom knezu Moskve Ivanu IV. ?;;Ivan IV. Grozni / Strašni;;false;;false
-25;;1;;Kemija;;100;;Koji kemijski element je osnovna sastavnica dijamanata?;;Ugljik;;false;;false
-26;;1;;Kemija;;200;;Što nastaje kada se pomiješaju kiseline i baze?;;Sol i voda;;false;;false
-27;;1;;Kemija;;300;;kemijski spoj poznat kao stolna sol;;NaCl;;false;;false
-28;;1;;Kemija;;400;;Koje je godine izašao hit Magazina čiji je naziv jednak imenu ove kategorije;;2010;;false;;false
-29;;1;;Kemija;;500;;"Bojni otrov službenog imena diklordietil-sulfid svoje je svijetlo dana ugledao u cik Prvog svjetskog rata, a u engleskom žargonu je ostao upamćen po svojoj specifičnoj boji te je stoga dobio nadimak po jednom „finom“ začinu. Kojem?";;senf (mustard);;false;;false
-30;;1;;Sport;;100;;Po kojem igraču hajduka se naziva najpopularnija pjesma splitske grupe Disconnect;;Marko Livaja;;false;;false
-31;;1;;Sport;;200;;Koji je nadimak popularnog NBA košarkaša Lebrona Jamesa?;;King (kralj);;false;;false
-32;;1;;Sport;;300;;Hrvatski sportaš koji je osvojio zlatnu medalju na Europskom prvenstvu u bacanju diska 2022.;;Sandra Perković (Elkasević);;false;;false
-33;;1;;Sport;;400;;"U kom sportu se koristi termin "birdie"?";;golf;;false;;false
-34;;1;;Sport;;500;;Koji je hrvatski vaterpolski klub najtrofejniji u povijesti?;;Mladost;;false;;false
+id;;round;;category;;price;;question;;answer;;double
+0;;1;;Film;;100;;Tko je pjevao "My Heart Will Go On" u Titanicu?;;Celine Dion;;0
+1;;1;;Film;;200;;Film iz 2019. koji je istovremeno snimljen na korejskom i engleskom jeziku te je osvojio Oscara za najbolji film.;;Parasite;;0
+2;;1;;Film;;300;;U kojem filmu Leonardo DiCaprio glumi lika koji ulazi u snove drugih ljudi?;;Inception;;0
+4;;1;;Film;;400;;Ovaj je hit benda Film iz 1981. poznat po refrenu “Zajedno...” DUPLI;;Zajedno;;1
+3;;1;;Film;;500;;Koje godine je bila prva dodjela nagrade Oscar?;;1929;;0
+5;;1;;Gen Z;;100;;ovaj hrvatski viralni meme govori o tome kako hrvatska vlada špijunira narod;;špijuniro golubiro;;0
+6;;1;;Gen Z;;200;;"Popularna aplikacija među Gen Z kojom se šalje jedna nenamještena fotka dnevno;; u točno određenom trenutku.";;BeReal;;0
+7;;1;;Gen Z;;300;;Ova serija popularna među mladima hrvatska je adaptacija norveške serije Skam ;;sram;;0
+8;;1;;Gen Z;;400;;"Ovaj emoji Gen Z često koristi da izrazi smijeh umjesto klasičnog ""plačem od smijeha"" emotikona";;lubanja / plakanje (sob);;0
+9;;1;;Gen Z;;500;;Ova svakidašnja radnja koristi se kao fraza za dobro obavljen posao.;;pojesti;;0
+10;;1;;Grad Zagreb;;100;;Koji broj moraš znati ako šalješ razglednicu iz Zagreba ili u Zagreb?;;10000;;0
+11;;1;;Grad Zagreb;;200;;Koje vozilo u Zagrebu u jednom putu pređe maksimalno 66 metara?;;uspinjača;;0
+12;;1;;Grad Zagreb;;300;;kako glasi tekst na novom vizualnom identitetu grada Zagreba;;zagreb volim te!;;0
+13;;1;;Grad Zagreb;;400;;U kojem se mjesecu tradicionalno održava Zagrebački maraton?;;Listopad (10.);;0
+14;;1;;Grad Zagreb;;500;;U kojem je stoljeću osnovano Sveučilište u Zagrebu?;;17. stoljeće (1669.);;0
+15;;1;;IT;;100;;Popularni format kompresije datoteka koji smanjuje veličinu bez gubitka sadržaja.;;ZIP;;0
+16;;1;;IT;;200;;"U mrežama, ova kratica označava jedinstvenu adresu svakog uređaja spojenog na Internet.";;IP adresa;;0
+17;;1;;IT;;300;;Ova je tvrtka vlasnik GitHub-a.;;Microsoft;;0
+18;;1;;IT;;400;;koliko je godina skype bio u pogonu?;;21 godina;;0
+19;;1;;IT;;500;;"Sigurnosni mehanizam koji se postavlja između lokalne mreže i vanjskog interneta, filtrira promet.";;Vatrozid (firewall);;0
+20;;1;;Ivan;;100;;Tko je napisao Smrt Smail-age Čengića?;;Ivan Mažuranić;;0
+21;;1;;Ivan;;200;;"Tko je autor djela ""Kako je Potjeh tražio istinu""";;Ivana Brlić-Mažuranić;;0
+22;;1;;Ivan;;300;;Ovaj Ivan bio je vođa hrvatske reprezentacije 2018. i poznat po ‘škaricama’;;Ivan Perišić;;0
+23;;1;;Ivan;;400;;Kako glasi češki oblik imena Ivan ako znamo da to ime nosi i jedan poznati golman nama susjedne države DUPLI;;Jan;;1
+24;;1;;Ivan;;500;;Koji nadimak se pripisuje velikom knezu Moskve Ivanu IV. ?;;Ivan IV. Grozni / Strašni;;0
+25;;1;;Kemija;;100;;Koji kemijski element je osnovna sastavnica dijamanata?;;Ugljik;;0
+26;;1;;Kemija;;200;;Što nastaje kada se pomiješaju kiseline i baze?;;Sol i voda;;0
+27;;1;;Kemija;;300;;kemijski spoj poznat kao stolna sol;;NaCl;;0
+28;;1;;Kemija;;400;;Koje je godine izašao hit Magazina čiji je naziv jednak imenu ove kategorije;;2010;;0
+29;;1;;Kemija;;500;;"Bojni otrov službenog imena diklordietil-sulfid svoje je svijetlo dana ugledao u cik Prvog svjetskog rata, a u engleskom žargonu je ostao upamćen po svojoj specifičnoj boji te je stoga dobio nadimak po jednom „finom“ začinu. Kojem?";;senf (mustard);;0
+30;;1;;Sport;;100;;Po kojem igraču hajduka se naziva najpopularnija pjesma splitske grupe Disconnect;;Marko Livaja;;0
+31;;1;;Sport;;200;;Koji je nadimak popularnog NBA košarkaša Lebrona Jamesa?;;King (kralj);;0
+32;;1;;Sport;;300;;Hrvatski sportaš koji je osvojio zlatnu medalju na Europskom prvenstvu u bacanju diska 2022. DUPLO;;Sandra Perković (Elkasević);;1
+33;;1;;Sport;;400;;"U kom sportu se koristi termin ""birdie""?";;golf;;0
+34;;1;;Sport;;500;;Koji je hrvatski vaterpolski klub najtrofejniji u povijesti?;;Mladost;;0
+35;;2;;Film;;100;;Film 100 druga runda;;Celine Dion;;0
+36;;2;;Film;;200;;Film 200 druga runda;;Parasite;;0
+37;;2;;Film;;300;;Film 300 druga runda;;Inception;;0
+38;;2;;Film;;400;;Film 400 druga runda;;Zajedno;;0
+39;;2;;Film;;500;;Film 500 druga runda;;1929;;0
+40;;2;;Gen Z;;100;;genz 100 druga runda;;špijuniro golubiro;;0
+41;;2;;Gen Z;;200;;genz 200 druga runda;;BeReal;;0
+42;;2;;Gen Z;;300;;genz 300 druga runda;;sram;;0
+43;;2;;Gen Z;;400;;genz 400 druga runda + dup;;lubanja / plakanje (sob);;1
+44;;2;;Gen Z;;500;;genz 500 druga runda;;pojesti;;0
+45;;2;;Grad Zagreb;;100;;zg 100 druga runda;;10000;;0
+46;;2;;Grad Zagreb;;200;;zg 200 druga runda;;uspinjača;;0
+47;;2;;Grad Zagreb;;300;;zg 300 druga runda;;zagreb volim te!;;0
+48;;2;;Grad Zagreb;;400;;zg 400 druga runda + dup;;Listopad (10.);;1
+49;;2;;Grad Zagreb;;500;;zg 500 druga runda;;17. stoljeće (1669.);;0
+50;;2;;IT;;100;;it 100 druga runda;;ZIP;;0
+51;;2;;IT;;200;;it 200 druga runda;;IP adresa;;0
+52;;2;;IT;;300;;it 300 druga runda;;Microsoft;;0
+53;;2;;IT;;400;;it 400 druga runda;;21 godina;;0
+54;;2;;IT;;500;;it 500 druga runda + dupli;;Vatrozid (firewall);;1
+55;;2;;Ivan;;100;;ivan 100 druga runda;;Ivan Mažuranić;;0
+56;;2;;Ivan;;200;;ivan 200 druga runda;;Ivana Brlić-Mažuranić;;0
+57;;2;;Ivan;;300;;ivan 300 druga runda;;Ivan Perišić;;0
+58;;2;;Ivan;;400;;ivan 400 druga runda;;Jan;;0
+59;;2;;Ivan;;500;;ivan 500 druga runda;;Ivan IV. Grozni / Strašni;;0

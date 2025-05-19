@@ -7,7 +7,13 @@ const URL = import.meta.env.VITE_SERVER_URL
 const socket = io(`${URL}`);
 
 export default function Admin() {
-  const [questions, setQuestions] = useState([]);
+  const [questions1, setQuestions1] = useState([]);
+  const [questions2, setQuestions2] = useState([]);
+  const [categories1, setCategories1] = useState([]);
+  const [categories2, setCategories2] = useState([]);
+  const [groupedQuestions1, setGQ1] = useState([]);
+  const [groupedQuestions2, setGQ2] = useState([]);
+
   const [popupData, setPopupData] = useState(null);
   const [userVotes, setUserVotes] = useState([]);
   const [canSend, setCanSend] = useState(false);
@@ -22,6 +28,7 @@ export default function Admin() {
 
   // Switch between display modes
   const [active, setActive] = useState(1);
+  const [lastBoard, setLastBoard] = useState(0)
 
   // 30 second timers
   const [timer, setTimer] = useState(30)
@@ -45,12 +52,30 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
-    fetch(`${URL}/api/questions/1`)
+    fetch(`${URL}/api/questions/`)
       .then((response) => response.json())
       .then((data) => {
-        setQuestions(data);
         const answeredIndices = data.filter((q) => q.answered == 1).map((q) => q.id);
         setReadQuestions(new Set(answeredIndices));
+
+        const questions1 = data.filter((q) => q.round === 1);
+        const questions2 = data.filter((q) => q.round === 2);
+        const categories1 = [...new Set(questions1.map((q) => q.category))];
+        const categories2 = [...new Set(questions2.map((q) => q.category))];
+
+        const groupedQuestions1 = categories1.map((category) =>
+          questions1.filter((q) => q.category === category)
+        );
+        const groupedQuestions2 = categories2.map((category) =>
+          questions2.filter((q) => q.category === category)
+        );
+
+        setQuestions1(questions1)
+        setQuestions2(questions2)
+        setCategories1(categories1)
+        setCategories2(categories2)
+        setGQ1(groupedQuestions1)
+        setGQ2(groupedQuestions2)
       })
       .catch((error) => console.error("Error fetching questions:", error));
   }, []);
@@ -190,11 +215,6 @@ export default function Admin() {
     alert(message);
   }
 
-  const categories = [...new Set(questions.map((q) => q.category))];
-  const groupedQuestions = categories.map((category) =>
-    questions.filter((q) => q.category === category)
-  );
-
   return (
     <div>
       <div className="top-panel">
@@ -202,8 +222,8 @@ export default function Admin() {
         <button className="mgmt-button" onClick={() => setMenuDisplay(!menuDisplay)}>Korisnici</button>
         <div className="switch-container">
           <p className={`${active == 1 ? "active" : ""}`} onClick={() => handleAdminSwitch(1)}>Početni</p>
-          <p className={`${active == 2 ? "active" : ""}`} onClick={() => handleAdminSwitch(2)}>1. krug</p>
-          <p className={`${active == 3 ? "active" : ""}`} onClick={() => handleAdminSwitch(3)}>2. krug</p>
+          <p className={`${active == 2 ? "active" : ""}`} onClick={() => {handleAdminSwitch(2); setLastBoard(2)}}>1. krug</p>
+          <p className={`${active == 3 ? "active" : ""}`} onClick={() => {handleAdminSwitch(3); setLastBoard(3)}}>2. krug</p>
           <p className={`${active == 4 ? "active" : ""}`} onClick={() => {handleAdminSwitch(4); socket.emit('open_points')}}>Bodovi</p>
         </div>
       </div>
@@ -215,8 +235,9 @@ export default function Admin() {
         <button onClick={login}>Prijava novog korisnika</button>
       </div>
       <div className="question-panel">
-        <div className="jeopardy-grid">
-          {groupedQuestions.map((categoryQuestions, categoryIndex) => (
+        {lastBoard === 2 && (
+          <div className="jeopardy-grid">
+          {groupedQuestions1.map((categoryQuestions, categoryIndex) => (
             <div key={categoryIndex} className="category-column">
               <h3>{categoryQuestions[0]?.category}</h3>
               {categoryQuestions.map((q, questionIndex) => (
@@ -240,6 +261,35 @@ export default function Admin() {
             </div>
           ))}
         </div>
+        )}
+
+        {lastBoard === 3 && (
+          <div className="jeopardy-grid">
+          {groupedQuestions2.map((categoryQuestions, categoryIndex) => (
+            <div key={categoryIndex} className="category-column">
+              <h3>{categoryQuestions[0]?.category}</h3>
+              {categoryQuestions.map((q, questionIndex) => (
+                <div
+                  key={questionIndex}
+                  className={`
+                    question-box
+                    ${readQuestions.has(q.id) ? "read-admin" : ""}
+                    ${q.double == 1 ? "question-box-double" : ""}
+                  `}
+                  onClick={() => !readQuestions.has(q.id) && handleShowPopup(q)}
+                >
+                  <p>
+                    {q.price} - {q.question}
+                    <b>
+                      {readQuestions.has(q.id) && " - " + q.answer}
+                    </b>
+                  </p>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        )}
 
         {popupData && (
           <div className="popup-overlay">

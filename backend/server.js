@@ -38,9 +38,8 @@ app.get("/", (req, res) => {
   return res.status(200).send("OK!");
 })
 
-app.get('/api/questions/:round', (req, res) => {
-  round = parseInt(req.params.round)
-  db.all(`select * from question where round = ${round}`, [], (err, rows) => {
+app.get('/api/questions', (req, res) => {
+  db.all('select * from question', [], (err, rows) => {
     if (err) { console.log(err) }
     res.json(rows)
   })

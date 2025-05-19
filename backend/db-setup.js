@@ -34,8 +34,7 @@ db.serialize(() => {
     rows
       .filter((row) => row.trim() !== "")
       .forEach((row) => {
-        const [id, round, category, price, question, answer, double, answered] = row.split(";;");
-        const doubleInt = double?.toLowerCase() === 'true' ? 1 : 0;
+        const [id, round, category, price, question, answer, double, _] = row.split(";;");
         question_insert.run(
           parseInt(id),
           parseInt(round),
@@ -43,7 +42,7 @@ db.serialize(() => {
           parseInt(price),
           question,
           answer,
-          doubleInt,
+          parseInt(double),
           0
         );
       });

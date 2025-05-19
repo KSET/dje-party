@@ -8,7 +8,6 @@ const socket = io(URL);
 
 export default function Display() {
   const [popupData, setPopupData] = useState(null);
-  const [questions, setQuestions] = useState([]);
   const [_, setCanSend] = useState(false);
   const [readQuestions, setReadQuestions] = useState(new Set());
   const [userPoints, setUserPoints] = useState([]);
@@ -18,6 +17,13 @@ export default function Display() {
   const [activeCountdown, setActiveCountdown] = useState(false);
   const intervalRef = useRef(null)
 
+  const [questions1, setQuestions1] = useState([]);
+  const [questions2, setQuestions2] = useState([]);
+  const [categories1, setCategories1] = useState([]);
+  const [categories2, setCategories2] = useState([]);
+  const [groupedQuestions1, setGQ1] = useState([]);
+  const [groupedQuestions2, setGQ2] = useState([]);
+
   // Register to socket
   useEffect(() => {
     socket.emit("display_join");
@@ -25,12 +31,30 @@ export default function Display() {
 
   // Fetch questions from the backend
   useEffect(() => {
-      fetch(`${URL}/api/questions/1`)
+      fetch(`${URL}/api/questions`)
         .then((response) => response.json())
         .then((data) => {
-          setQuestions(data);
           const answeredIndices = data.filter((q) => q.answered == 1).map((q) => q.id);
           setReadQuestions(new Set(answeredIndices));
+
+          const questions1 = data.filter((q) => q.round === 1);
+          const questions2 = data.filter((q) => q.round === 2);
+          const categories1 = [...new Set(questions1.map((q) => q.category))];
+          const categories2 = [...new Set(questions2.map((q) => q.category))];
+
+          const groupedQuestions1 = categories1.map((category) =>
+            questions1.filter((q) => q.category === category)
+          );
+          const groupedQuestions2 = categories2.map((category) =>
+            questions2.filter((q) => q.category === category)
+          );
+
+          setQuestions1(questions1)
+          setQuestions2(questions2)
+          setCategories1(categories1)
+          setCategories2(categories2)
+          setGQ1(groupedQuestions1)
+          setGQ2(groupedQuestions2)
         })
         .catch((error) => console.error("Error fetching questions:", error));
     }, []);
@@ -119,14 +143,6 @@ export default function Display() {
     }, 1000);
   };
 
-  const categories = [...new Set(questions.map((q) => q.category))];
-  const groupedQuestions1 = categories.map((category) =>
-    questions.filter((q) => q.round == 1 && q.category === category)
-  );
-  const groupedQuestions2 = categories.map((category) =>
-    questions.filter((q) => q.round == 2 && q.category === category)
-  );
-
   return (
     <div>
       {active === 1 && (
@@ -138,10 +154,10 @@ export default function Display() {
         <div className="display-container">
           {active === 2 && (
             <div className="display-grid">
-              {groupedQuestions1.map((questions, categoryIndex) => (
+              {groupedQuestions1.map((questions1, categoryIndex) => (
                 <div key={categoryIndex} className="category-column">
-                  <div className="category-header shadow">{categories[categoryIndex]}</div>
-                  {questions.map((q, questionIndex) => (
+                  <div className="category-header shadow">{categories1[categoryIndex]}</div>
+                  {questions1.map((q, questionIndex) => (
                     <div key={questionIndex}
                       className={`prize-cell ${readQuestions.has(q.id) ? "read-display" : "shadow"}`}
                     >
@@ -155,10 +171,10 @@ export default function Display() {
 
           {active === 3 && (
             <div className="display-grid">
-              {groupedQuestions2.map((questions, categoryIndex) => (
+              {groupedQuestions2.map((questions2, categoryIndex) => (
                 <div key={categoryIndex} className="category-column">
-                  <div className="category-header shadow">{categories[categoryIndex]}</div>
-                  {questions.map((q, questionIndex) => (
+                  <div className="category-header shadow">{categories2[categoryIndex]}</div>
+                  {questions2.map((q, questionIndex) => (
                     <div key={questionIndex}
                       className={`prize-cell ${readQuestions.has(q.id) ? "read-display" : "shadow"}`}
                     >
