@@ -147,7 +147,7 @@ export default function Display() {
     <div>
       {active === 1 && (
         <div className="logo-container">
-          <img src='../../assets/splash.png'></img>
+          <img src='../../splash.png'></img>
         </div>
       )}
       {(active === 2 || active == 3) && (

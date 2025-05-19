@@ -71,7 +71,7 @@ export default function User({ username }) {
   return (
     <div className='user-container-full'>
       <header>
-        <img src='../../assets/logo.png'></img>
+        <img src='../../logo.png'></img>
       </header>
       <div className='user-container'>
         <div className='user-greet'>

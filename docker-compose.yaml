@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  backend:
+  dje-party:
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,17 +12,4 @@ services:
     volumes:
       - ./backend:/app/backend
       - /app/backend/node_modules
-    depends_on: []
-
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: sh -c "cd frontend && npm run host"
-    working_dir: /app
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app/frontend
-      - /app/frontend/node_modules
     depends_on: []

@@ -27,7 +27,7 @@ export default function Login({ onLogin }) {
  return (
   <div className="app-container" style={{ overflow: 'hidden'}}>
     <header>
-      <img src='../../assets/logo.png'></img>
+      <img src='../../logo.png'></img>
     </header>
     <div className="login-container">
       <div className="login-box">

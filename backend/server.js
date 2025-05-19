@@ -31,10 +31,14 @@ const io = new Server(server, {
 
 app.use(express.static('../frontend/dist'))
 
+// app.use(cors({
+//   origin: `${URL}:5173`,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true
+// }))
+
 app.use(cors({
-  origin: `${URL}:5173`,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  origin: '*',
 }))
 
 app.get("/", (req, res) => {
@@ -181,6 +185,6 @@ io.on('connection', (socket) => {
   })
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on ${URL}:${PORT}`)
 });
