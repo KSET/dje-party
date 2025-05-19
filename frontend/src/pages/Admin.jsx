@@ -27,6 +27,12 @@ export default function Admin() {
   const [timer, setTimer] = useState(30)
   const intervalRef = useRef(null)
 
+  // Manual point entry
+  const [manualEntry, setManualEntry] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [points, setPoints] = useState('');
+
   // Register to socket
   useEffect(() => {
     socket.emit("admin_join");
@@ -56,6 +62,17 @@ export default function Admin() {
     });
     return () => socket.off("new_message");
   }, []);
+
+  // fetch user list from backend
+  useEffect(() => {
+    const getUsers = async () => {
+      const response = await fetch(`${URL}/api/users`)
+      const data = await response.json()
+      setUsers(data)
+      console.log(data)
+    }
+    getUsers();
+  }, [])
 
   // Open question for everyone
   const handleShowPopup = (question) => {
@@ -118,7 +135,7 @@ export default function Admin() {
       }
     });
     setUserVotes([]);
-    setHasRegisteredVotes(true); // Mark votes as registered
+    setHasRegisteredVotes(true);
   };
 
   // Register new users
@@ -135,6 +152,7 @@ export default function Admin() {
     const data = await response.text()
     alert(data);
 
+    setUsers((prevUsers) => [...prevUsers, {"username": username}])
     setUsername('');
     setPassword('');
     setDisplay('');
@@ -156,6 +174,21 @@ export default function Admin() {
       });
     }, 1000);
   };
+
+  const manualPointEntry = async () => {
+    setSelectedUser('');
+    setPoints('')
+    const response = await fetch(`${URL}/api/points`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "username": selectedUser,
+        "points": parseInt(points),
+      })
+    });
+    const message = await response.text();
+    alert(message);
+  }
 
   const categories = [...new Set(questions.map((q) => q.category))];
   const groupedQuestions = categories.map((category) =>
@@ -217,12 +250,29 @@ export default function Admin() {
               <div className="admin-popup-content">
                 <div>
                   <p>{popupData.category}, <b>{popupData.price}</b> bodova</p>
-                  {popupData.double == 0 ? <p><i><b>Dvostruki bodovi</b></i></p> : <></>}
+                  {popupData.double == 1 ? <p><i><b>Dvostruki bodovi</b></i></p> : <></>}
                   <p>Pitanje: {popupData.question}</p>
                   <p><i>Odgovor: {popupData.answer}</i></p>
                 </div>
                 <div>
-                  <h3>Odgovori</h3>
+                  <div className="odgovori-header">
+                    <h3>Odgovori</h3>
+                    <button onClick={() => setManualEntry(!manualEntry)}>Ručni unos bodova</button>
+                  </div>
+                  <div className="manual-entry" hidden={!manualEntry}>
+                    <select value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+                      {users.map((u, u_index) => (
+                        <option key={u_index} value={u.username}>{u.username}</option>
+                      ))}
+                    </select>
+                    <input
+                      type="number"
+                      value={points}
+                      onChange={(e) => setPoints(e.target.value)}
+                      placeholder="Bodovi za igrača"
+                    />
+                    <button onClick={manualPointEntry}>Unesi bodove</button>
+                  </div>
                   <div className="scrollable">
                     <div className="points-row" style={{ paddingBottom: '10px', margin: '10px 0', borderBottom: "2px white solid" }}>
                       <span className="points-username">Korisničko ime</span>

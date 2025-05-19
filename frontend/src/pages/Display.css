@@ -398,3 +398,12 @@ button:disabled:hover {
 .points-vote {
   width: 10%;
 }
+
+.odgovori-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.odgovori-header > button {
+  margin-left: 20px;
+}

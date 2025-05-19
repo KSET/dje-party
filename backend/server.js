@@ -54,6 +54,13 @@ app.post('/api/answer/:id', (req, res) => {
   })
 });
 
+app.get('/api/users', (req, res) => {
+  db.all('select username from user', [], (err, rows) => {
+    if (err) { console.log(err) }
+    res.json(rows)
+  })
+})
+
 app.post('/api/user', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
@@ -76,7 +83,7 @@ app.get('/api/points', (req, res) => {
 
 app.post('/api/points', (req, res) => {  
   let username = req.body.username;
-  let points = req.body.points;
+  let points = parseInt(req.body.points);
 
   db.all(`update user set points = points + ? where username = ?`, [points, username], (err, _) => {
     if (err) { console.log(err) }
