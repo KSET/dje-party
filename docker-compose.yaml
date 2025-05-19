@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "cd backend && node server.js"
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app/backend
+    depends_on: []
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "cd frontend && npm run host"
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app/frontend
+    depends_on: []
