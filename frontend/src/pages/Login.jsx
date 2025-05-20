@@ -10,13 +10,17 @@ export default function Login({ onLogin }) {
 
   const login = async () => {
     if (username === 'display')
+      setUsername('')
+      setPassword('')
       return onLogin('display', 'display');
     try {
-      const res = await axios.post(`${URL}/login`, 
+      const res = await axios.post(`/login`, 
         { username, password }, 
         { withCredentials: true }
       );
       if (res.data.success) {
+        setUsername('')
+        setPassword('')
         onLogin(res.data.role, username);
       }
     } catch (err) {

@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 import "./User.css";
 
-const URL = import.meta.env.VITE_SERVER_URL
-const socket = io(`${URL}`);
+const socket = io();
 
 export default function User({ username }) {
   const [message, setMessage] = useState('');
@@ -60,9 +59,8 @@ export default function User({ username }) {
   };
 
   const fetchPoints = async () => {
-    const response = await fetch(`${URL}/api/points`)
+    const response = await fetch(`/api/points`)
     const data = await response.json()
-    console.log(data)
     const _user = data.find(user => user.username === username);
     const _points = _user ? _user.points : null;
     setUserPoints(_points);

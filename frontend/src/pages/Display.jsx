@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useRef, act } from "react";
+import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import "./Display.css";
 
-const URL = import.meta.env.VITE_SERVER_URL;
-
-const socket = io(URL);
+const socket = io();
 
 export default function Display() {
   const [popupData, setPopupData] = useState(null);
@@ -31,7 +29,7 @@ export default function Display() {
 
   // Fetch questions from the backend
   useEffect(() => {
-      fetch(`${URL}/api/questions`)
+      fetch(`/api/questions`)
         .then((response) => response.json())
         .then((data) => {
           const answeredIndices = data.filter((q) => q.answered == 1).map((q) => q.id);
@@ -109,7 +107,7 @@ export default function Display() {
     };
 
     const updatePoints = async () => {
-      const response = await fetch(`${URL}/api/points`);
+      const response = await fetch(`/api/points`);
       let data = await response.json();
       data = data
         .filter(item => item.display !== "Administrator" && item.display !== "Display")

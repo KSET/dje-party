@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import "./Display.css";
 
-const URL = import.meta.env.VITE_SERVER_URL
-
-const socket = io(`${URL}`);
+const socket = io();
 
 export default function Admin() {
   const [questions1, setQuestions1] = useState([]);
@@ -52,7 +50,7 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
-    fetch(`${URL}/api/questions/`)
+    fetch(`/api/questions`)
       .then((response) => response.json())
       .then((data) => {
         const answeredIndices = data.filter((q) => q.answered == 1).map((q) => q.id);
@@ -91,10 +89,9 @@ export default function Admin() {
   // fetch user list from backend
   useEffect(() => {
     const getUsers = async () => {
-      const response = await fetch(`${URL}/api/users`)
+      const response = await fetch(`/api/users`)
       const data = await response.json()
       setUsers(data)
-      console.log(data)
     }
     getUsers();
   }, [])
@@ -103,7 +100,7 @@ export default function Admin() {
   const handleShowPopup = (question) => {
     setPopupData(question);
     socket.emit("admin_show_question", question);
-    setHasRegisteredVotes(false); // Reset since a new question is shown
+    setHasRegisteredVotes(false);
   };
 
   // Close question for everyone
@@ -117,7 +114,7 @@ export default function Admin() {
       setReadQuestions((prev) => new Set([...prev, popupData.id]));
 
       // new way
-      const response = fetch(`${URL}/api/answer/${popupData.id}`, {
+      const response = fetch(`/api/answer/${popupData.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -147,7 +144,7 @@ export default function Admin() {
       const points = parseInt(checkbox.getAttribute("data-points"));
 
       if (username && points) {
-        fetch(`${URL}/api/points`, {
+        fetch(`/api/points`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -165,7 +162,7 @@ export default function Admin() {
 
   // Register new users
   const login = async () => {
-    const response = await fetch(`${URL}/api/user`, {
+    const response = await fetch(`/api/user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -203,7 +200,7 @@ export default function Admin() {
   const manualPointEntry = async () => {
     setSelectedUser('');
     setPoints('')
-    const response = await fetch(`${URL}/api/points`, {
+    const response = await fetch(`/api/points`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

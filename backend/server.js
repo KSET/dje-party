@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -29,17 +30,21 @@ let approvedMessages = [];
 let globalAllowed = false;
 
 
-const URL="http://localhost"
-const PORT = 3001;
+const URL = process.env.URL
+const PORT = process.env.PORT
 
 const io = new Server(server, {
-  cors: { origin: `${URL}:5173`, methods: ['GET', 'POST'] }
+  cors: {
+    origin: `${URL}:${PORT}`,
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
 });
 
 app.use(express.static('../frontend/dist'))
 
 app.use(cors({
-  origin: `${URL}:5173`,
+  origin: `${URL}:${PORT}`,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }))
@@ -51,6 +56,7 @@ app.get("/", (req, res) => {
 app.get('/api/questions', (req, res) => {
   db.all('select * from question', [], (err, rows) => {
     if (err) { console.log(err) }
+    console.log(rows)
     res.json(rows)
   })
 });
