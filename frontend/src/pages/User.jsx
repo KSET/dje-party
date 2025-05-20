@@ -7,7 +7,7 @@ const socket = io();
 export default function User({ username }) {
   const [message, setMessage] = useState('');
   const [bet, setBet] = useState(0);
-  const [canSend, setCanSend] = useState(true);
+  const [canSend, setCanSend] = useState(false);
   const [userPoints, setUserPoints] = useState(0);
 
   const [active, setActive] = useState(1);
@@ -20,7 +20,6 @@ export default function User({ username }) {
     socket.emit('login_user', username);
 
     const handlePermission = (allowed) => {
-      console.log(`permission_status: allowed=${allowed}, active=${active}`);
       fetchPoints();
       setCanSend(allowed);
       setActiveCountdown(allowed);
@@ -32,13 +31,10 @@ export default function User({ username }) {
     socket.on('permission_status', handlePermission);
 
     socket.on('display_switch', (id) => {
-      console.log(`display_switch: id=${id}, current active=${active}, timer=${timer}`);
       setActive(id);
-      // Clear any existing interval
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
-      // Only start countdown if allowed to send
       if (canSend && activeCountdown) {
         startCountdown(id === 5 ? 60 : 30);
       }
@@ -51,7 +47,7 @@ export default function User({ username }) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [username, canSend, activeCountdown, active]);
+  }, [username, activeCountdown, active]);
 
   useEffect(() => {
     fetchPoints();
@@ -62,11 +58,10 @@ export default function User({ username }) {
     socket.emit('user_message', { username, msg: message, bet: bet ? bet : 0 });
     setCanSend(false);
     setMessage('');
-    alert("Hvala na odgovoru!");
+    alert("Odgovor predan!");
   };
 
   const startCountdown = (initialTimer) => {
-    console.log(`startCountdown: initialTimer=${initialTimer}, active=${active}`);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -77,7 +72,6 @@ export default function User({ username }) {
       setTimer((prev) => {
         if (prev <= 1) {
           clearInterval(intervalRef.current);
-          console.log('Countdown finished');
           return 0;
         }
         return prev - 1;
@@ -123,14 +117,39 @@ export default function User({ username }) {
         />
         {active === 5 && (
           <input
-            type='number'
-            min='0'
-            max={userPoints}
-            value={bet}
-            onChange={(e) => setBet(e.target.value)}
-            placeholder={canSend ? "Ulog..." : ""}
-            disabled={!canSend}
-          />
+          type="number"
+          min="0"
+          max={userPoints}
+          value={bet}
+          onChange={(e) => {
+            const value = e.target.value;
+            const clampedValue = Math.min(Math.max(Number(value), 0), userPoints);
+            setBet(clampedValue);
+          }}
+          onKeyDown={(e) => {
+            const input = e.target;
+            const value = input.value;
+            const key = e.key;
+
+            if (key === '-') {
+              e.preventDefault();
+              return;
+            }
+            const selectionStart = input.selectionStart;
+            const selectionEnd = input.selectionEnd;
+            const newValue = value.slice(0, selectionStart) + key + value.slice(selectionEnd);
+            if (key.length === 1 && !/^[0-9]$/.test(key)) {
+              e.preventDefault();
+              return;
+            }
+            if (Number(newValue) > userPoints || Number(newValue) < 0) {
+              e.preventDefault();
+              return;
+            }
+          }}
+          placeholder={canSend ? "Ulog..." : ""}
+          disabled={!canSend}
+        />
         )}
         <button onClick={sendMessage} disabled={!canSend}>Odgovori!</button>
       </div>

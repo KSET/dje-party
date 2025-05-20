@@ -158,7 +158,6 @@ export default function Display() {
       let data = await response.json();
       data = data
         .filter((item) => item.display !== "Administrator" && item.display !== "Display")
-        .filter((item) => item.points > 0)
         .sort((a, b) => b.points - a.points);
       setUserPoints(data);
     };
