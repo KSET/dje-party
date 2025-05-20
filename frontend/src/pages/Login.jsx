@@ -9,10 +9,11 @@ export default function Login({ onLogin }) {
   const URL = import.meta.env.VITE_SERVER_URL
 
   const login = async () => {
-    if (username === 'display')
+    if (username === 'display') {
       setUsername('')
       setPassword('')
-      return onLogin('display', 'display');
+      return onLogin('display', 'display'); 
+    }
     try {
       const res = await axios.post(`/login`, 
         { username, password }, 

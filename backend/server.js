@@ -56,7 +56,6 @@ app.get("/", (req, res) => {
 app.get('/api/questions', (req, res) => {
   db.all('select * from question', [], (err, rows) => {
     if (err) { console.log(err) }
-    console.log(rows)
     res.json(rows)
   })
 });
