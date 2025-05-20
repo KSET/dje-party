@@ -18,6 +18,13 @@ const path = require('path')
 const emitter = new EventEmitter()
 emitter.setMaxListeners(0)
 
+const {
+  dropQuestionTable,
+  createQuestionTable,
+  dropUserTable,
+  createUserTable
+} = require('./db-utils.js')
+
 let approvedMessages = [];
 let globalAllowed = false;
 
@@ -92,6 +99,32 @@ app.post('/api/points', (req, res) => {
     else {return res.status(200).send("Points updated")}
   })
 })
+
+app.get('/api/dje-reset-game', async (req, res) => {
+  console.log('Database reset triggered');
+  try {
+    await dropQuestionTable();
+    await dropUserTable();
+    await createQuestionTable();
+    await createUserTable();
+    res.status(200).json({ message: 'Database successfully reset' });
+  } catch (error) {
+    console.error('Error resetting database:', error);
+    res.status(500).json({ error: 'Failed to reset database', details: error.message });
+  }
+});
+
+app.get('/api/dje-reset-questions', async (req, res) => {
+  console.log('Questions reset triggered');
+  try {
+    await dropQuestionTable();
+    await createQuestionTable();
+    res.status(200).json({ message: 'Questions successfully reset' });
+  } catch (error) {
+    console.error('Error resetting questions:', error);
+    res.status(500).json({ error: 'Failed to reset questions', details: error.message });
+  }
+});
 
 app.use(session({
   secret: 'djeparty',
