@@ -105,22 +105,21 @@ export default function Admin() {
 
   // Close question for everyone
   const handleClosePopup = () => {
-    setPopupData(null);
     setCanSend(false)
     socket.emit("set_global_permission", false)
     socket.emit("close_question");
 
-    if (popupData?.id) {
+    if (popupData) {
       setReadQuestions((prev) => new Set([...prev, popupData.id]));
-
-      // new way
-      const response = fetch(`/api/answer/${popupData.id}`, {
+      
+      fetch(`/api/answer/${popupData.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({})
       });
+      setPopupData(null);
     }
 
     socket.emit("mark_as_read", popupData.id)
