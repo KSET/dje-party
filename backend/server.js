@@ -163,9 +163,9 @@ io.on('connection', (socket) => {
     socket.emit('permission_status', globalAllowed);
   });
 
-  socket.on('user_message', ({ username, msg }) => {
+  socket.on('user_message', ({ username, msg, bet }) => {
     if (globalAllowed) {
-      io.to('admin').emit('new_message', { username, msg });
+      io.to('admin').emit('new_message', { username, msg, bet });
     }
   });
 
@@ -203,7 +203,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('display_switch', (id) => {
-    io.to('display').emit('display_switch', id);
+    io.emit('display_switch', id);
   })
 
   socket.on('open_points', () => {
