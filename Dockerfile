@@ -6,6 +6,7 @@ RUN npm install -g concurrently
 COPY frontend ./frontend
 WORKDIR /app/frontend
 RUN npm install
+RUN npm run build
 
 WORKDIR /app
 COPY backend ./backend
@@ -14,6 +15,6 @@ RUN npm install
 
 WORKDIR /app
 
-EXPOSE 5173 3001
+EXPOSE 3001
 
-CMD concurrently "cd backend && node server.js" "cd frontend && npm run host"
+CMD concurrently "cd backend && node server.js"
