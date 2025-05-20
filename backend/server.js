@@ -31,14 +31,10 @@ const io = new Server(server, {
 
 app.use(express.static('../frontend/dist'))
 
-// app.use(cors({
-//   origin: `${URL}:5173`,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true
-// }))
-
 app.use(cors({
-  origin: '*',
+  origin: `${URL}:5173`,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }))
 
 app.get("/", (req, res) => {
