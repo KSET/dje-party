@@ -6,8 +6,6 @@ export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const URL = import.meta.env.VITE_SERVER_URL
-
   const login = async () => {
     if (username === 'display') {
       setUsername('')
