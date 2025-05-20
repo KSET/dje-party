@@ -7,10 +7,13 @@ const socket = io();
 export default function Admin() {
   const [questions1, setQuestions1] = useState([]);
   const [questions2, setQuestions2] = useState([]);
+  const [questions3, setQuestions3] = useState([]);
   const [categories1, setCategories1] = useState([]);
   const [categories2, setCategories2] = useState([]);
+  const [categories3, setCategories3] = useState([]);
   const [groupedQuestions1, setGQ1] = useState([]);
   const [groupedQuestions2, setGQ2] = useState([]);
+  const [groupedQuestions3, setGQ3] = useState([]);
 
   const [popupData, setPopupData] = useState(null);
   const [userVotes, setUserVotes] = useState([]);
@@ -58,8 +61,10 @@ export default function Admin() {
 
         const questions1 = data.filter((q) => q.round === 1);
         const questions2 = data.filter((q) => q.round === 2);
+        const questions3 = data.filter((q) => q.round === 3);
         const categories1 = [...new Set(questions1.map((q) => q.category))];
         const categories2 = [...new Set(questions2.map((q) => q.category))];
+        const categories3 = [...new Set(questions3.map((q) => q.category))];
 
         const groupedQuestions1 = categories1.map((category) =>
           questions1.filter((q) => q.category === category)
@@ -67,13 +72,19 @@ export default function Admin() {
         const groupedQuestions2 = categories2.map((category) =>
           questions2.filter((q) => q.category === category)
         );
+        const groupedQuestions3 = categories3.map((category) =>
+          questions3.filter((q) => q.category === category)
+        );
 
         setQuestions1(questions1)
         setQuestions2(questions2)
+        setQuestions3(questions3)
         setCategories1(categories1)
         setCategories2(categories2)
+        setCategories3(categories3)
         setGQ1(groupedQuestions1)
         setGQ2(groupedQuestions2)
+        setGQ3(groupedQuestions3)
       })
       .catch((error) => console.error("Error fetching questions:", error));
   }, []);
@@ -127,6 +138,7 @@ export default function Admin() {
 
   const undoOpenPopup = () => {
     setPopupData(null);
+    socket.emit("set_global_permission", false)
     socket.emit('undo_open')
   }
 
@@ -138,6 +150,7 @@ export default function Admin() {
   // Send points to the backend
   const handleRegisterPoints = (double_points) => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const uncheckedCheckboxes = document.querySelectorAll('input[type="checkbox"]:not(:checked)');
     checkboxes.forEach((checkbox) => {
       const username = checkbox.getAttribute("data-username");
       const points = parseInt(checkbox.getAttribute("data-points"));
@@ -155,6 +168,27 @@ export default function Admin() {
         });
       }
     });
+
+    if (lastBoard === 5) {
+      uncheckedCheckboxes.forEach((checkbox) => {
+        const username = checkbox.getAttribute("data-username");
+        const points = parseInt(checkbox.getAttribute("data-points"));
+
+        if (username && points) {
+          fetch(`/api/points`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'username': username,
+              'points': -1 * points * (1 + double_points)
+            })
+          });
+        }
+      });
+    }
+
     setUserVotes([]);
     setHasRegisteredVotes(true);
   };
@@ -179,11 +213,11 @@ export default function Admin() {
     setDisplay('');
   }
 
-  const startCountdown = () => {
+  const startCountdown = (customSeconds = 30) => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-    setTimer(30);
+    setTimer(customSeconds);
     
     intervalRef.current = setInterval(() => {
       setTimer(prev => {
@@ -220,6 +254,7 @@ export default function Admin() {
           <p className={`${active == 1 ? "active" : ""}`} onClick={() => handleAdminSwitch(1)}>Početni</p>
           <p className={`${active == 2 ? "active" : ""}`} onClick={() => {handleAdminSwitch(2); setLastBoard(2)}}>1. krug</p>
           <p className={`${active == 3 ? "active" : ""}`} onClick={() => {handleAdminSwitch(3); setLastBoard(3)}}>2. krug</p>
+          <p className={`${active == 5 ? "active" : ""}`} onClick={() => {handleAdminSwitch(5); setLastBoard(5)}}>3. krug</p>
           <p className={`${active == 4 ? "active" : ""}`} onClick={() => {handleAdminSwitch(4); socket.emit('open_points')}}>Bodovi</p>
         </div>
       </div>
@@ -287,6 +322,34 @@ export default function Admin() {
         </div>
         )}
 
+        {lastBoard === 5 && (
+          <div className="jeopardy-grid">
+          {groupedQuestions3.map((categoryQuestions, categoryIndex) => (
+            <div key={categoryIndex} className="category-column">
+              <h3>{categoryQuestions[0]?.category}</h3>
+              {categoryQuestions.map((q, questionIndex) => (
+                <div
+                  key={questionIndex}
+                  className={`
+                    question-box
+                    ${readQuestions.has(q.id) ? "read-admin" : ""}
+                    ${q.double == 1 ? "question-box-double" : ""}
+                  `}
+                  onClick={() => !readQuestions.has(q.id) && handleShowPopup(q)}
+                >
+                  <p>
+                    {q.price} - {q.question}
+                    <b>
+                      {readQuestions.has(q.id) && " - " + q.answer}
+                    </b>
+                  </p>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        )}
+
         {popupData && (
           <div className="popup-overlay">
             <div className="popup">
@@ -328,14 +391,17 @@ export default function Admin() {
                     {userVotes.map((vote, index) => (
                       <div key={index} className="points-row">
                         <span className="points-username">{vote.username}</span>
-                        <span className="points-answer">{vote.msg}</span>
+                        <span className="points-answer">
+                          {vote.msg}
+                          {lastBoard === 5 ? ` (${vote.bet})` : ""}  
+                        </span>
                         <span className="points-vote">
                           <input
-                          type="checkbox"
-                          data-username={vote.username}
-                          data-points={popupData.price}
-                          className="custom-checkbox"
-                        />
+                            type="checkbox"
+                            data-username={vote.username}
+                            data-points={lastBoard === 5 ? vote.bet : popupData.price}
+                            className="custom-checkbox"
+                          />
                         </span>
                       </div>
                     ))}
@@ -347,8 +413,8 @@ export default function Admin() {
                   <button className="btn-grn" onClick={
                     () => {
                       socket.emit("set_global_permission", true);
-                      setCanSend(true)
-                      startCountdown()
+                      setCanSend(true);
+                      lastBoard === 5 ? startCountdown(60) : startCountdown()
                     }}>
                     Uključi odgovore
                   </button>
