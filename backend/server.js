@@ -1,11 +1,9 @@
-require('dotenv').config()
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-require('dotenv').config({ path: '.env' });
 
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./mydb.sqlite');
@@ -15,7 +13,6 @@ const server = http.createServer(app);
 app.use(bodyParser.json());
 
 const { EventEmitter } = require('stream');
-const path = require('path')
 const emitter = new EventEmitter()
 emitter.setMaxListeners(0)
 
@@ -29,9 +26,8 @@ const {
 let approvedMessages = [];
 let globalAllowed = false;
 
-
-const URL = process.env.URL
-const PORT = process.env.PORT
+const URL = ''
+const PORT = "3001"
 
 const io = new Server(server, {
   cors: {
@@ -49,11 +45,11 @@ app.use(cors({
   credentials: true
 }))
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   return res.status(200).send("OK!");
 })
 
-app.get('/api/questions', (req, res) => {
+app.get('/api/questions', (_, res) => {
   db.all('select * from question', [], (err, rows) => {
     if (err) { console.log(err) }
     res.json(rows)
@@ -68,7 +64,7 @@ app.post('/api/answer/:id', (req, res) => {
   })
 });
 
-app.get('/api/users', (req, res) => {
+app.get('/api/users', (_, res) => {
   db.all('select username from user', [], (err, rows) => {
     if (err) { console.log(err) }
     res.json(rows)
@@ -88,7 +84,7 @@ app.post('/api/user', (req, res) => {
   })
 })
 
-app.get('/api/points', (req, res) => {
+app.get('/api/points', (_, res) => {
   db.all(`select username, display, points from user`, [], (err, rows) => {
     if (err) { console.log(err) }
     res.json(rows)
@@ -105,7 +101,7 @@ app.post('/api/points', (req, res) => {
   })
 })
 
-app.get('/api/dje-reset-game', async (req, res) => {
+app.get('/api/dje-reset-game', async (_, res) => {
   console.log('Database reset triggered');
   try {
     await dropQuestionTable();
@@ -119,7 +115,7 @@ app.get('/api/dje-reset-game', async (req, res) => {
   }
 });
 
-app.get('/api/dje-reset-questions', async (req, res) => {
+app.get('/api/dje-reset-questions', async (_, res) => {
   console.log('Questions reset triggered');
   try {
     await dropQuestionTable();
@@ -143,7 +139,7 @@ app.post('/login', (req, res) => {
   db.all(`select password, role from user where username = ?`, [username], (err, rows) => {
     if (err) { console.log(err); }
     else {
-      if (rows[0].password === password) {
+      if (rows[0]?.password === password) {
         req.session.user = {username, role: rows[0].role}
         res.json({ success: true, role: rows[0].role})
       } else {
