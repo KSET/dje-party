@@ -362,20 +362,17 @@ button:disabled:hover {
   height: 100vh;
   background-color: #00009e;
   display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
 }
 
 .points-container > div {
   margin: auto;
   min-width: 40%;
-  font-size: 45px;
+  font-size: clamp(20px, 5vw, 45px);
   font-family: Korinna;
   text-transform: uppercase;
   color: #f3a951;
-}
-
-.points-row {
-  display: flex;
-  justify-content: space-between;
 }
 
 .custom-checkbox {
@@ -391,6 +388,9 @@ button:disabled:hover {
 .points-row {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .points-row > span {

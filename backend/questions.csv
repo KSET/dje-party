@@ -1,62 +1,62 @@
 id;;round;;category;;price;;question;;answer;;double
-0;;1;;Film;;100;;Tko je pjevao "My Heart Will Go On" u Titanicu?;;Celine Dion;;0
+0;;1;;Film;;100;;"Izvođačica koja je otpjevala ""My Heart Will Go On"" u Titanicu.";;Celine Dion;;0
 1;;1;;Film;;200;;Film iz 2019. koji je istovremeno snimljen na korejskom i engleskom jeziku te je osvojio Oscara za najbolji film.;;Parasite;;0
-2;;1;;Film;;300;;U kojem filmu Leonardo DiCaprio glumi lika koji ulazi u snove drugih ljudi?;;Inception;;0
-4;;1;;Film;;400;;Ovaj je hit benda Film iz 1981. poznat po refrenu “Zajedno...” DUPLI;;Zajedno;;1
-3;;1;;Film;;500;;Koje godine je bila prva dodjela nagrade Oscar?;;1929;;0
-5;;1;;Gen Z;;100;;ovaj hrvatski viralni meme govori o tome kako hrvatska vlada špijunira narod;;špijuniro golubiro;;0
-"6;;1;;Gen Z;;200;;"Popularna aplikacija među Gen Z kojom se šalje jedna nenamještena fotka dnevno, u točno određenom trenutku.";;BeReal;;0"
-7;;1;;Gen Z;;300;;Ova serija popularna među mladima hrvatska je adaptacija norveške serije Skam ;;sram;;0
-8;;1;;Gen Z;;400;;"Ovaj emoji Gen Z često koristi da izrazi smijeh umjesto klasičnog ""plačem od smijeha"" emotikona";;lubanja / plakanje (sob);;0
-9;;1;;Gen Z;;500;;Ova svakidašnja radnja koristi se kao fraza za dobro obavljen posao.;;pojesti;;0
-10;;1;;Grad Zagreb;;100;;Koji broj moraš znati ako šalješ razglednicu iz Zagreba ili u Zagreb?;;10000;;0
-11;;1;;Grad Zagreb;;200;;Koje vozilo u Zagrebu u jednom putu pređe maksimalno 66 metara?;;uspinjača;;0
-12;;1;;Grad Zagreb;;300;;kako glasi tekst na novom vizualnom identitetu grada Zagreba;;zagreb volim te!;;0
-13;;1;;Grad Zagreb;;400;;U kojem se mjesecu tradicionalno održava Zagrebački maraton?;;Listopad (10.);;0
-14;;1;;Grad Zagreb;;500;;U kojem je stoljeću osnovano Sveučilište u Zagrebu?;;17. stoljeće (1669.);;0
-15;;1;;IT;;100;;Popularni format kompresije datoteka koji smanjuje veličinu bez gubitka sadržaja.;;ZIP;;0
-16;;1;;IT;;200;;"U mrežama, ova kratica označava jedinstvenu adresu svakog uređaja spojenog na Internet.";;IP adresa;;0
-17;;1;;IT;;300;;Ova je tvrtka vlasnik GitHub-a.;;Microsoft;;0
-18;;1;;IT;;400;;koliko je godina skype bio u pogonu?;;21 godina;;0
-19;;1;;IT;;500;;"Sigurnosni mehanizam koji se postavlja između lokalne mreže i vanjskog interneta, filtrira promet.";;Vatrozid (firewall);;0
-20;;1;;Ivan;;100;;Tko je napisao Smrt Smail-age Čengića?;;Ivan Mažuranić;;0
-21;;1;;Ivan;;200;;"Tko je autor djela ""Kako je Potjeh tražio istinu""";;Ivana Brlić-Mažuranić;;0
-22;;1;;Ivan;;300;;Ovaj Ivan bio je vođa hrvatske reprezentacije 2018. i poznat po ‘škaricama’;;Ivan Perišić;;0
-23;;1;;Ivan;;400;;Kako glasi češki oblik imena Ivan ako znamo da to ime nosi i jedan poznati golman nama susjedne države DUPLI;;Jan;;1
-24;;1;;Ivan;;500;;Koji nadimak se pripisuje velikom knezu Moskve Ivanu IV. ?;;Ivan IV. Grozni / Strašni;;0
-25;;1;;Kemija;;100;;Koji kemijski element je osnovna sastavnica dijamanata?;;Ugljik;;0
-26;;1;;Kemija;;200;;Što nastaje kada se pomiješaju kiseline i baze?;;Sol i voda;;0
-27;;1;;Kemija;;300;;kemijski spoj poznat kao stolna sol;;NaCl;;0
-28;;1;;Kemija;;400;;Koje je godine izašao hit Magazina čiji je naziv jednak imenu ove kategorije;;2010;;0
-29;;1;;Kemija;;500;;"Bojni otrov službenog imena diklordietil-sulfid svoje je svijetlo dana ugledao u cik Prvog svjetskog rata, a u engleskom žargonu je ostao upamćen po svojoj specifičnoj boji te je stoga dobio nadimak po jednom „finom“ začinu. Kojem?";;senf (mustard);;0
-30;;1;;Sport;;100;;Po kojem igraču hajduka se naziva najpopularnija pjesma splitske grupe Disconnect;;Marko Livaja;;0
-31;;1;;Sport;;200;;Koji je nadimak popularnog NBA košarkaša Lebrona Jamesa?;;King (kralj);;0
-32;;1;;Sport;;300;;Hrvatski sportaš koji je osvojio zlatnu medalju na Europskom prvenstvu u bacanju diska 2022. DUPLO;;Sandra Perković (Elkasević);;1
-33;;1;;Sport;;400;;"U kom sportu se koristi termin ""birdie""?";;golf;;0
-34;;1;;Sport;;500;;Koji je hrvatski vaterpolski klub najtrofejniji u povijesti?;;Mladost;;0
-35;;2;;Film;;100;;Film 100 druga runda;;Celine Dion;;0
-36;;2;;Film;;200;;Film 200 druga runda;;Parasite;;0
-37;;2;;Film;;300;;Film 300 druga runda;;Inception;;0
-38;;2;;Film;;400;;Film 400 druga runda;;Zajedno;;0
-39;;2;;Film;;500;;Film 500 druga runda;;1929;;0
-40;;2;;Gen Z;;100;;genz 100 druga runda;;špijuniro golubiro;;0
-41;;2;;Gen Z;;200;;genz 200 druga runda;;BeReal;;0
-42;;2;;Gen Z;;300;;genz 300 druga runda;;sram;;0
-43;;2;;Gen Z;;400;;genz 400 druga runda + dup;;lubanja / plakanje (sob);;1
-44;;2;;Gen Z;;500;;genz 500 druga runda;;pojesti;;0
-45;;2;;Grad Zagreb;;100;;zg 100 druga runda;;10000;;0
-46;;2;;Grad Zagreb;;200;;zg 200 druga runda;;uspinjača;;0
-47;;2;;Grad Zagreb;;300;;zg 300 druga runda;;zagreb volim te!;;0
-48;;2;;Grad Zagreb;;400;;zg 400 druga runda + dup;;Listopad (10.);;1
-49;;2;;Grad Zagreb;;500;;zg 500 druga runda;;17. stoljeće (1669.);;0
-50;;2;;IT;;100;;it 100 druga runda;;ZIP;;0
-51;;2;;IT;;200;;it 200 druga runda;;IP adresa;;0
-52;;2;;IT;;300;;it 300 druga runda;;Microsoft;;0
-53;;2;;IT;;400;;it 400 druga runda;;21 godina;;0
-54;;2;;IT;;500;;it 500 druga runda + dupli;;Vatrozid (firewall);;1
-55;;2;;Ivan;;100;;ivan 100 druga runda;;Ivan Mažuranić;;0
-56;;2;;Ivan;;200;;ivan 200 druga runda;;Ivana Brlić-Mažuranić;;0
-57;;2;;Ivan;;300;;ivan 300 druga runda;;Ivan Perišić;;0
-58;;2;;Ivan;;400;;ivan 400 druga runda;;Jan;;0
-59;;2;;Ivan;;500;;ivan 500 druga runda;;Ivan IV. Grozni / Strašni;;0
-60;;3;;Konačno pitanje;;?;;pitanje;;odgovor;;0,
+2;;1;;Film;;300;;U ovom filmu Leonardo DiCaprio glumi lika koji ulazi u snove drugih ljudi.;;Inception;;0
+3;;1;;Film;;400;;Tehnika snimanja filma u kojoj se čini da je sve snimljeno u jednom kadru bez rezova.;;One-shot / single take;;1
+4;;1;;Film;;500;;"Rrežiser koji stoji iza filmova Inception, The Dark Knight i Oppenheimer.";;Christopher Nolan;;0", The Dark Knight i Oppenheimer.";;Christopher Nolan;;0"
+5;;1;;Sport;;100;;Igrač hajduka po kojemu se naziva najpopularnija pjesma splitske grupe Disconnect.;;Marko Livaja;;0
+6;;1;;Sport;;200;;Nadimak popularnog NBA košarkaša Lebrona Jamesa.;;King (kralj);;0
+7;;1;;Sport;;300;;Hrvatski sportaš koji je osvojio zlatnu medalju na Europskom prvenstvu u bacanju diska 2022.;;Sandra Elkasević (Perković);;1
+8;;1;;Sport;;400;;"Sport u kojem se koristi termin ""birdie"".";;golf;;0
+9;;1;;Sport;;500;;Najtrofejniji hrvatski vaterpolski klub u povijesti.;;Mladost;;0
+10;;1;;Grad Zagreb;;100;;Poštanski broj Zagreba.;;10000;;0
+11;;1;;Grad Zagreb;;200;;Vozilo u Zagrebu koje na jednom putu pređe maksimalno 66 metara.;;uspinjača;;0
+12;;1;;Grad Zagreb;;300;;Tekst na novom vizualnom identitetu grada Zagreba.;;zagreb volim te!;;0
+13;;1;;Grad Zagreb;;400;;"Najstariji zagrebački most koji još uvijek stoji, premda nije najduži.";;Savski most;;0
+14;;1;;Grad Zagreb;;500;;Stoljeće u kojemu je osnovano Sveučilište u Zagrebu.;;17. stoljeće (1669.);;0
+15;;1;;Kemija;;100;;Kemijski element koji je osnovna sastavnica dijamanata.;;Ugljik;;0
+16;;1;;Kemija;;300;;Produkti miješanja kiseline i baze.;;Sol i voda;;0
+17;;1;;Kemija;;200;;Kemijski spoj poznat kao stolna sol.;;NaCl;;0
+18;;1;;Kemija;;400;;Godina koje je izašao hit Magazina čiji je naziv jednak imenu ove kategorije.;;2010;;0
+19;;1;;Kemija;;500;;"Bojni otrov službenog imena diklordietil-sulfid svoje je svjetlo dana ugledao u cik Prvog svjetskog rata, a u engleskom žargonu je ostao upamćen po svojoj specifičnoj boji te je stoga dobio nadimak po jednom „finom“ začinu.";;senf (mustard);;0
+20;;1;;Job Fair;;100;;Ova vrsta dokumenta često se traži na sajmu poslova i sadrži tvoje vještine i iskustvo.;;životopis;;0
+21;;1;;Job Fair;;200;;Broj različitih koktela koji se nude na Loosen Upu.;;6;;1
+22;;1;;Job Fair;;300;;Dvorana u MEC-u u kojoj održavaju talkovi.;;Zemlja;;0
+23;;1;;Job Fair;;400;;Ovogodišnje izdanje Job Faira.;;18;;0
+24;;1;;Job Fair;;500;;U ovom eventu na Job Fairu sudionici razgovaraju i isprobavaju ljute umake;;Hot Talk;;0
+25;;1;;IT;;100;;Popularni format kompresije datoteka koji smanjuje veličinu bez gubitka sadržaja.;;ZIP;;0
+26;;1;;IT;;200;;"U mrežama, ova kratica označava jedinstvenu adresu svakog uređaja spojenog na Internet.";;IP adresa;;0
+27;;1;;IT;;300;;Ova je tvrtka vlasnik GitHub-a.;;Microsoft;;0
+28;;1;;IT;;400;;"Vremenski period, u godinama, tijekom kojeg je Skype bio u pogonu.";;21 godina;;0
+29;;1;;IT;;500;;"Sigurnosni mehanizam koji se postavlja između lokalne mreže i vanjskog interneta, filtrira promet.";;Vatrozid (firewall);;0
+30;;2;;Gen Z;;200;;Ovaj hrvatski viralni meme govori o tome kako hrvatska vlada špijunira narod;;Špijuniro Golubiro;;0
+31;;2;;Gen Z;;400;;"Popularna aplikacija među Gen Z kojom se šalje jedna nenamještena fotka dnevno, u točno određenom trenutku.";;BeReal;;0
+32;;2;;Gen Z;;600;;"Ova serija popularna među mladima hrvatska je adaptacija norveške serije ""Skam"".";;Sram;;0
+33;;2;;Gen Z;;800;;"Ovaj emoji Gen Z često koristi da izrazi smijeh umjesto klasičnog ""plačem od smijeha"" emotikona";;lubanja / plakanje (sob);;0
+34;;2;;Gen Z;;1000;;Videoigra iz 2020. u kojoj igrači moraju otkriti uljeze među članovima posade svemirskog broda.;;Among Us;;0
+35;;2;;Nastavi tekst;;200;;"Houston, _____________";;we have a problem!;;0
+36;;2;;Nastavi tekst;;400;;"Ay I'm a big boy now/I'm ready to leave, ____________";;"ciao, mamma, ciao";;1
+37;;2;;Nastavi tekst;;600;;"Srce divlje lupa, želim te/ja ti brišem suze vodim te u stan/dok polako pogled moj _________";;spušta se;;0
+38;;2;;Nastavi tekst;;800;;"Gorin ka baklja kipa slobode/Iz mraka iz pakla ove riči me vode/Kad nema vitra, onda imam vesla/________________________";;bacan znanja ka Nikola Tesla;;0
+39;;2;;Nastavi tekst;;1000;;"Šta je u sehari bilo? Saš ti čut. Tu je bilo faraonskih karata, faraonskih pirsingova, piramida, mindžuša, __________ ";;ajkula i drakula;;0
+40;;2;;Đe;;200;;"Ova država nosi ime prema liniji koja prolazi kroz nju, a ta linija dijeli Zemlju na sjever i jug?";;Ekvador;;0
+41;;2;;Đe;;400;;Rijeka koja protječe kroz Budimpeštu.;;Dunav;;0
+42;;2;;Đe;;600;;Glavni grad Australije.;;Canberra;;1
+43;;2;;Đe;;800;;"Ocean u kojemu se nalazi najdublja točka oceana, Marijanska brazda.";;Tihi ocean;;0
+44;;2;;Đe;;1000;;"Ova država nema samo jedan glavni grad, nego ČAK 3. Koja je to država?";;Južnoafrička Republika;;0
+45;;2;;Brojevi;;200;;(2^4-3^3 )^2 = ?;;121;;0
+46;;2;;Brojevi;;400;;"Broj karata u standardnom Poker špilu, ako izbacimo Jokere.";;52;;0
+47;;2;;Brojevi;;600;;i⁴ + i³ + i² + i + 1 = ?;;1;;0
+48;;2;;Brojevi;;800;;Broj 1000101 u dekadskom.;;300;;1
+49;;2;;Brojevi;;1000;;Broj načina na koji možemo izabrati tri od šest koktela.;;20;;0
+50;;2;;Ivan;;200;;Autor djela Smrt Smail-age Čengića.;;Ivan Mažuranić;;0
+51;;2;;Ivan;;400;;"Autor djela ""Kako je Potjeh tražio istinu"".";;Ivana Brlić-Mažuranić;;0
+52;;2;;Ivan;;600;;Ovaj Ivan bio je vođa hrvatske reprezentacije 2018. i poznat po ‘škaricama’.;;Ivan Perišić;;0
+53;;2;;Ivan;;800;;"Češki oblik imena Ivan, ako znamo da to ime nosi i jedan poznati golman nama susjedne države.";;Jan;;1
+54;;2;;Ivan;;1000;;Nadimak koji se pripisuje velikom knezu Moskve Ivanu IV.;;Ivan IV. Grozni / Strašni;;0
+55;;2;;Slušna;;200;;Ime pjevačice.;;Josipa Lisac;;0
+56;;2;;Slušna;;400;;Ime pjesme.;;Bile Starke;;0
+57;;2;;Slušna;;600;;Ime skladatelja.;;Mozart;;1
+58;;2;;Slušna;;800;;Ime albuma.;;OK Computer;;0
+59;;2;;Slušna;;1000;;Ime pjesme.;;Computer Love;;0
+60;;3;;Konačno pitanje;;0;;"1) država s kopnenom površinom od 56 561 km2, 3 871 833 stanovnika i 78 otoka. / 2) tekstilni materijal po kojem je jedan od najpoznatijih trgovačkih puteva dobio ime. / 3) može biti muški, ženski, dupli, kirurški, prometni, lađarski, probavni, ...";;Kravata;;0
