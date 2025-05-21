@@ -6,7 +6,7 @@ const socket = io();
 
 export default function User({ username }) {
   const [message, setMessage] = useState('');
-  const [bet, setBet] = useState(0);
+  const [bet, setBet] = useState('');
   const [canSend, setCanSend] = useState(false);
   const [userPoints, setUserPoints] = useState(0);
 
@@ -117,40 +117,16 @@ export default function User({ username }) {
         />
         {active === 5 && (
           <input
-          type="number"
-          min="0"
-          max={userPoints}
-          value={bet}
-          onChange={(e) => {
-            const value = e.target.value;
-            const clampedValue = Math.min(Math.max(Number(value), 0), userPoints);
-            setBet(clampedValue);
-          }}
-          onKeyDown={(e) => {
-            const input = e.target;
-            const value = input.value;
-            const key = e.key;
-
-            if (key === '-') {
-              e.preventDefault();
-              return;
-            }
-            const selectionStart = input.selectionStart;
-            const selectionEnd = input.selectionEnd;
-            const newValue = value.slice(0, selectionStart) + key + value.slice(selectionEnd);
-            if (key.length === 1 && !/^[0-9]$/.test(key)) {
-              e.preventDefault();
-              return;
-            }
-            if (Number(newValue) > userPoints || Number(newValue) < 0) {
-              e.preventDefault();
-              return;
-            }
-          }}
-          placeholder={canSend ? "Ulog..." : ""}
-          disabled={!canSend}
-        />
-        )}
+            value={bet}
+            onChange={(e) => {
+              const value = e.target.value;
+              const clampedValue = Math.min(Math.max(Number(value), 0), userPoints);
+              setBet(clampedValue);
+            }}
+            placeholder={canSend ? `Ulog (0 - ${userPoints})` : ""}
+            disabled={!canSend}
+          />
+          )}
         <button onClick={sendMessage} disabled={!canSend}>Odgovori!</button>
       </div>
     </div>
