@@ -1,12 +1,14 @@
 // dbControl.js
 const sqlite3 = require('sqlite3').verbose();
-const fs = require('fs').promises; // Use promises version of fs
+const fs = require('fs').promises; 
 const path = require('path');
-const db = new sqlite3.Database('./mydb.sqlite');
+const db = new sqlite3.Database('./mydb.sqlite'); //ovo pec pec
 
 const dropQuestionTable = () => {
+  const db =new sqlite3.Database('./mydb.sqlite'); 
   return new Promise((resolve, reject) => {
     db.run(`DROP TABLE IF EXISTS question`, (err) => {
+      db.close();
       if (err) {
         reject(err);
       } else {
@@ -17,8 +19,10 @@ const dropQuestionTable = () => {
 };
 
 const createQuestionTable = async () => {
+  const db = new sqlite3.Database('./mydb.sqlite'); 
+
   try {
-    // Create the table
+
     await new Promise((resolve, reject) => {
       db.run(
         `
@@ -32,10 +36,13 @@ const createQuestionTable = async () => {
           double INTEGER,
           answered INTEGER
         ) STRICT
-      `,
+        `,
         (err) => {
-          if (err) reject(err);
-          else resolve();
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
         }
       );
     });
@@ -45,16 +52,17 @@ const createQuestionTable = async () => {
     const data = await fs.readFile(filePath, 'utf8');
     const rows = data.split('\n').slice(1).filter(row => row.trim() !== '');
 
-    const question_insert = db.prepare(`
-      INSERT INTO question (id, round, category, price, question, answer, double, answered)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `);
 
     await new Promise((resolve, reject) => {
+      const insertStmt = db.prepare(`
+        INSERT INTO question (id, round, category, price, question, answer, double, answered)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+
       db.serialize(() => {
-        rows.forEach(row => {
+        for (const row of rows) {
           const [id, round, category, price, question, answer, double] = row.split(';;');
-          question_insert.run(
+          insertStmt.run(
             parseInt(id),
             parseInt(round),
             category,
@@ -64,26 +72,40 @@ const createQuestionTable = async () => {
             parseInt(double),
             0,
             (err) => {
-              if (err) reject(err);
+              if (err) {
+                console.error('Fail row:', row, err.message);
+                reject(err);
+              }
             }
           );
-        });
-        question_insert.finalize((err) => {
-          if (err) reject(err);
-          else resolve();
+        }
+
+        insertStmt.finalize((err) => {
+          if (err) {
+            console.error('Fail', err.message);
+            reject(err);
+          } else {
+            console.log('Sve insertano kak spada.');
+            resolve();
+          }
         });
       });
     });
 
+    db.close();
     return { message: 'Question table successfully created and populated.' };
+
   } catch (err) {
-    throw err; // Throw to be caught by Express route
+    db.close();
+    throw err;
   }
 };
 
 const dropUserTable = () => {
+  const db = new sqlite3.Database('./mydb.sqlite'); 
   return new Promise((resolve, reject) => {
     db.run(`DROP TABLE IF EXISTS user`, (err) => {
+      db.close();
       if (err) {
         reject(err);
       } else {
@@ -94,8 +116,10 @@ const dropUserTable = () => {
 };
 
 const createUserTable = async () => {
+  const db = new sqlite3.Database('./mydb.sqlite'); 
+
   try {
-    // Create the table
+
     await new Promise((resolve, reject) => {
       db.run(
         `
@@ -106,15 +130,17 @@ const createUserTable = async () => {
           display TEXT,
           points INTEGER
         ) STRICT
-      `,
+        `,
         (err) => {
-          if (err) reject(err);
-          else resolve();
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
         }
       );
     });
 
-    // Insert default users
     const user_insert = db.prepare(`
       INSERT INTO user (username, password, role, display, points)
       VALUES (?, ?, ?, ?, ?)
@@ -123,21 +149,33 @@ const createUserTable = async () => {
     await new Promise((resolve, reject) => {
       db.serialize(() => {
         user_insert.run('admin', 'adminpass', 'admin', 'Administrator', 0, (err) => {
-          if (err) reject(err);
+          if (err) {
+            reject(err);
+          }
         });
+
         user_insert.run('display', 'display', 'display', 'Display', 0, (err) => {
-          if (err) reject(err);
+          if (err) {
+            reject(err);
+          }
         });
+
         user_insert.finalize((err) => {
-          if (err) reject(err);
-          else resolve();
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
         });
       });
     });
 
+    db.close();
     return { message: 'User table successfully created and populated.' };
+
   } catch (err) {
-    throw err; // Throw to be caught by Express route
+    db.close();
+    throw err;
   }
 };
 
