@@ -1,7 +1,5 @@
 // dbControl.js
 const sqlite3 = require('sqlite3').verbose();
-const fs = require('fs').promises; 
-const path = require('path');
 const db = new sqlite3.Database('./mydb.sqlite'); //ovo pec pec
 
 const dropQuestionTable = () => {
@@ -19,7 +17,7 @@ const dropQuestionTable = () => {
 };
 
 const createQuestionTable = async () => {
-  const db = new sqlite3.Database('./mydb.sqlite'); 
+  const db = new sqlite3.Database('./mydb.sqlite');
 
   try {
 
@@ -47,53 +45,9 @@ const createQuestionTable = async () => {
       );
     });
 
-    // Read and insert data from CSV
-    const filePath = path.join(__dirname, 'questions.csv');
-    const data = await fs.readFile(filePath, 'utf8');
-    const rows = data.split('\n').slice(1).filter(row => row.trim() !== '');
-
-
-    await new Promise((resolve, reject) => {
-      const insertStmt = db.prepare(`
-        INSERT INTO question (id, round, category, price, question, answer, double, answered)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `);
-
-      db.serialize(() => {
-        for (const row of rows) {
-          const [id, round, category, price, question, answer, double] = row.split(';;');
-          insertStmt.run(
-            parseInt(id),
-            parseInt(round),
-            category,
-            parseInt(price),
-            question,
-            answer,
-            parseInt(double),
-            0,
-            (err) => {
-              if (err) {
-                console.error('Fail row:', row, err.message);
-                reject(err);
-              }
-            }
-          );
-        }
-
-        insertStmt.finalize((err) => {
-          if (err) {
-            console.error('Fail', err.message);
-            reject(err);
-          } else {
-            console.log('Sve insertano kak spada.');
-            resolve();
-          }
-        });
-      });
-    });
-
+    // Table created successfully, no CSV loading
     db.close();
-    return { message: 'Question table successfully created and populated.' };
+    return { message: 'Question table successfully created.' };
 
   } catch (err) {
     db.close();

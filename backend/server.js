@@ -64,6 +64,63 @@ app.post('/api/answer/:id', (req, res) => {
   })
 });
 
+// Question management endpoints
+app.post('/api/questions', (req, res) => {
+  const { round, category, price, question, answer, double } = req.body;
+  
+  db.run(`INSERT INTO question (round, category, price, question, answer, double, answered) 
+          VALUES (?, ?, ?, ?, ?, ?, 0)`,
+    [round, category, price, question, answer, double ? 1 : 0], function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error creating question");
+    } else {
+      res.status(201).json({ id: this.lastID, message: "Question created successfully" });
+    }
+  });
+});
+
+app.put('/api/questions/:id', (req, res) => {
+  const { round, category, price, question, answer, double } = req.body;
+  const id = req.params.id;
+  
+  db.run(`UPDATE question SET round = ?, category = ?, price = ?, question = ?, answer = ?, double = ? 
+          WHERE id = ?`,
+    [round, category, price, question, answer, double ? 1 : 0, id], function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error updating question");
+    } else {
+      res.status(200).send("Question updated successfully");
+    }
+  });
+});
+
+app.delete('/api/questions/:id', (req, res) => {
+  const id = req.params.id;
+  
+  db.run(`DELETE FROM question WHERE id = ?`, [id], function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error deleting question");
+    } else {
+      res.status(200).send("Question deleted successfully");
+    }
+  });
+});
+
+app.get('/api/categories/:round', (req, res) => {
+  const round = req.params.round;
+  db.all('SELECT DISTINCT category FROM question WHERE round = ? ORDER BY category', [round], (err, rows) => {
+    if (err) { 
+      console.log(err);
+      res.status(500).send("Error fetching categories");
+    } else {
+      res.json(rows.map(row => row.category));
+    }
+  });
+});
+
 app.get('/api/users', (_, res) => {
   db.all('select username from user', [], (err, rows) => {
     if (err) { console.log(err) }
