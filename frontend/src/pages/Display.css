@@ -421,3 +421,182 @@ button:disabled:hover {
 .odgovori-header > button {
   margin-left: 20px;
 }
+
+/* Questions Management Panel */
+.questions-management-panel {
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.questions-management-panel h2 {
+  margin-top: 0;
+  color: #00009e;
+}
+
+.round-selection {
+  margin-bottom: 20px;
+}
+
+.round-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.round-buttons button {
+  padding: 10px 20px;
+  background-color: #00009e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.round-buttons button.active {
+  background-color: #f3a951;
+  color: #00009e;
+}
+
+.questions-content {
+  display: flex;
+  gap: 20px;
+}
+
+.categories-section, .questions-section {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.category-list {
+  margin: 10px 0;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin: 5px 0;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+.category-item span {
+  cursor: pointer;
+  flex: 1;
+}
+
+.category-item span.selected {
+  font-weight: bold;
+  color: #00009e;
+}
+
+.category-item .delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 5px;
+}
+
+.add-category {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.add-category input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.question-form {
+  margin: 15px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.form-row {
+  margin: 10px 0;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-row input[type="text"],
+.form-row input[type="number"],
+.form-row textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-family: Fjalla;
+}
+
+.form-row textarea {
+  resize: vertical;
+}
+
+.form-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.questions-list {
+  margin-top: 20px;
+}
+
+.question-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: white;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.question-price {
+  font-weight: bold;
+  color: #00009e;
+}
+
+.question-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.question-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 5px;
+}
+
+.question-content p {
+  margin: 5px 0;
+}
+
+.question-content strong {
+  color: #00009e;
+}
