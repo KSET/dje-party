@@ -433,6 +433,27 @@ export default function Admin() {
     });
   };
 
+  const markAsUnread = async (questionId) => {
+    try {
+      const response = await fetch(`/api/questions/${questionId}/mark-unread`, {
+        method: 'POST'
+      });
+
+      if (response.ok) {
+        setReadQuestions((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(questionId);
+          return newSet;
+        });
+      } else {
+        alert('Greška pri označavanju pitanja kao neproitano');
+      }
+    } catch (error) {
+      console.error('Error marking question as unread:', error);
+      alert('Greška pri označavanju pitanja kao neproitano');
+    }
+  };
+
   const cancelEdit = () => {
     setEditingQuestion(null);
     setQuestionForm({ price: '', question: '', answer: '', double: false });
@@ -805,6 +826,9 @@ export default function Admin() {
                         <div className="question-header">
                           <span className="question-price">{question.price} bodova {question.double === 1 && '(2x)'}</span>
                           <div className="question-actions">
+                            {question.answered === 1 && (
+                              <button onClick={() => markAsUnread(question.id)} title="Označi kao neproitano">👁️</button>
+                            )}
                             <button onClick={() => editQuestion(question)}>✏️</button>
                             <button onClick={() => deleteQuestion(question.id)}>🗑️</button>
                           </div>

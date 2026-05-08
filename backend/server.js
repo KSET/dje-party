@@ -109,6 +109,19 @@ app.delete('/api/questions/:id', (req, res) => {
   });
 });
 
+app.post('/api/questions/:id/mark-unread', (req, res) => {
+  const id = req.params.id;
+  
+  db.run(`UPDATE question SET answered = 0 WHERE id = ?`, [id], function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error marking question as unread");
+    } else {
+      res.status(200).send("Question marked as unread");
+    }
+  });
+});
+
 app.get('/api/categories/:round', (req, res) => {
   const round = req.params.round;
   db.all('SELECT DISTINCT category FROM question WHERE round = ? ORDER BY category', [round], (err, rows) => {
