@@ -150,6 +150,7 @@ body {
   font-size: 60px;
   margin: 20px 0;
   padding: auto;
+  white-space: pre-line;
 }
 
 .popup-question-double {
@@ -198,6 +199,21 @@ body {
 .read-admin:hover{
   cursor: default;
   background-color: white;
+}
+
+.unread-button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 2px 5px;
+  font-size: 0.8em;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.unread-button:hover {
+  background-color: #ff5252;
 }
 
 .read-display {
