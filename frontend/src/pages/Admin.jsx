@@ -166,8 +166,9 @@ export default function Admin() {
     setActive(id);
     if (id === 6) {
       setLastBoard(0);
+    } else {
+      socket.emit("display_switch", id)
     }
-    socket.emit("display_switch", id)
   }
 
   // Send points to the backend
@@ -234,6 +235,28 @@ export default function Admin() {
     setUsername('');
     setPassword('');
     setDisplay('');
+  }
+
+  const deleteUser = async (username) => {
+    if (!confirm(`Jeste li sigurni da želite obrisati korisnika "${username}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/user/${username}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        setUsers((prevUsers) => prevUsers.filter(user => user.username !== username));
+        alert('Korisnik obrisan uspješno');
+      } else {
+        alert('Greška pri brisanju korisnika');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Greška pri brisanju korisnika');
+    }
   }
 
   const startCountdown = (customSeconds = 30) => {
@@ -516,6 +539,24 @@ export default function Admin() {
         <input placeholder="Lozinka" type="password" value={password} onChange={e => setPassword(e.target.value)} />
         <input placeholder="Display ime" value={display} onChange={e => setDisplay(e.target.value)} />
         <button onClick={login}>Prijava novog korisnika</button>
+        
+        <h3 style={{marginTop: '20px'}}>Postojeći korisnici</h3>
+        <div className="users-list">
+          {users.map((user, index) => (
+            <div key={index} className="user-item">
+              <span>{user.username}</span>
+              {user.username !== 'admin' && user.username !== 'display' && (
+                <button 
+                  className="delete-user-btn" 
+                  onClick={() => deleteUser(user.username)}
+                  title="Obriši korisnika"
+                >
+                  🗑️
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
       {active !== 6 && (
         <div className="question-panel">

@@ -154,6 +154,24 @@ app.post('/api/user', (req, res) => {
   })
 })
 
+app.delete('/api/user/:username', (req, res) => {
+  const username = req.params.username;
+  
+  // Prevent deletion of admin and display users
+  if (username === 'admin' || username === 'display') {
+    return res.status(403).send("Cannot delete admin or display users");
+  }
+  
+  db.run(`DELETE FROM user WHERE username = ?`, [username], function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error deleting user");
+    } else {
+      res.status(200).send("User deleted successfully");
+    }
+  });
+})
+
 app.get('/api/points', (_, res) => {
   db.all(`select username, display, points from user`, [], (err, rows) => {
     if (err) { console.log(err) }
