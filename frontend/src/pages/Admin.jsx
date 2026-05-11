@@ -162,6 +162,29 @@ export default function Admin() {
     socket.emit('undo_open')
   }
 
+  // Mark question as unread
+  const markAsUnread = async (questionId) => {
+    try {
+      const response = await fetch(`/api/unanswer/${questionId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      });
+      if (response.ok) {
+        setReadQuestions((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(questionId);
+          return newSet;
+        });
+        socket.emit("mark_as_unread", questionId);
+      }
+    } catch (error) {
+      console.error("Error marking question as unread:", error);
+    }
+  }
+
   const handleAdminSwitch = (id) => {
     setActive(id);
     if (id === 6) {
@@ -456,27 +479,6 @@ export default function Admin() {
     });
   };
 
-  const markAsUnread = async (questionId) => {
-    try {
-      const response = await fetch(`/api/questions/${questionId}/mark-unread`, {
-        method: 'POST'
-      });
-
-      if (response.ok) {
-        setReadQuestions((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(questionId);
-          return newSet;
-        });
-      } else {
-        alert('Greška pri označavanju pitanja kao neproitano');
-      }
-    } catch (error) {
-      console.error('Error marking question as unread:', error);
-      alert('Greška pri označavanju pitanja kao neproitano');
-    }
-  };
-
   const cancelEdit = () => {
     setEditingQuestion(null);
     setQuestionForm({ price: '', question: '', answer: '', double: false });
@@ -581,6 +583,17 @@ export default function Admin() {
                         {readQuestions.has(q.id) && " - " + q.answer}
                       </b>
                     </p>
+                    {readQuestions.has(q.id) && (
+                      <button 
+                        className="unread-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          markAsUnread(q.id);
+                        }}
+                      >
+                        Označi kao nepročitano
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -609,6 +622,17 @@ export default function Admin() {
                         {readQuestions.has(q.id) && " - " + q.answer}
                       </b>
                     </p>
+                    {readQuestions.has(q.id) && (
+                      <button 
+                        className="unread-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          markAsUnread(q.id);
+                        }}
+                      >
+                        Označi kao nepročitano
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -637,6 +661,17 @@ export default function Admin() {
                         {readQuestions.has(q.id) && " - " + q.answer}
                       </b>
                     </p>
+                    {readQuestions.has(q.id) && (
+                      <button 
+                        className="unread-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          markAsUnread(q.id);
+                        }}
+                      >
+                        Označi kao nepročitano
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>

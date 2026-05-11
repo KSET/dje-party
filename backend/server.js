@@ -64,6 +64,14 @@ app.post('/api/answer/:id', (req, res) => {
   })
 });
 
+app.post('/api/unanswer/:id', (req, res) => {
+  id = req.params.id
+  db.all(`update question set answered = 0 where id = ${id}`, [], (err, _) => {
+    if (err) { console.log(err) }
+    else { res.status(200).send("Question marked as unread.") }
+  })
+});
+
 // Question management endpoints
 app.post('/api/questions', (req, res) => {
   const { round, category, price, question, answer, double } = req.body;
@@ -288,6 +296,10 @@ io.on('connection', (socket) => {
 
   socket.on('mark_as_read', (questionId) => {
     io.to('display').emit('mark_as_read', questionId);
+  });
+
+  socket.on('mark_as_unread', (questionId) => {
+    io.to('display').emit('mark_as_unread', questionId);
   });
 
   socket.on('display_switch', (id) => {

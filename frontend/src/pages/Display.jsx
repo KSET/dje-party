@@ -153,6 +153,14 @@ export default function Display() {
       setReadQuestions((prev) => new Set([...prev, questionId]));
     };
 
+    const handleMarkAsUnread = (questionId) => {
+      setReadQuestions((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(questionId);
+        return newSet;
+      });
+    };
+
     const updatePoints = async () => {
       const response = await fetch(`/api/points`);
       let data = await response.json();
@@ -164,10 +172,12 @@ export default function Display() {
 
     socket.on("open_points", updatePoints);
     socket.on("mark_as_read", handleMarkAsRead);
+    socket.on("mark_as_unread", handleMarkAsUnread);
 
     return () => {
       socket.off("open_points", updatePoints);
       socket.off("mark_as_read", handleMarkAsRead);
+      socket.off("mark_as_unread", handleMarkAsUnread);
     };
   }, []);
 
