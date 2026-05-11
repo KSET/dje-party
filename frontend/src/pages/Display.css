@@ -332,6 +332,41 @@ button:disabled:hover {
   margin: 0;
 }
 
+.users-list {
+  margin-top: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 5px 0;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.user-item span {
+  font-weight: bold;
+  color: #00009e;
+}
+
+.delete-user-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 5px;
+  color: #d9534f;
+}
+
+.delete-user-btn:hover {
+  color: #c9302c;
+}
+
 .mgmt-button {
   height: 50px;
   margin: 0 20px;

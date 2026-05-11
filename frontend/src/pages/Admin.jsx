@@ -166,8 +166,9 @@ export default function Admin() {
     setActive(id);
     if (id === 6) {
       setLastBoard(0);
+    } else {
+      socket.emit("display_switch", id)
     }
-    socket.emit("display_switch", id)
   }
 
   // Send points to the backend
@@ -234,6 +235,28 @@ export default function Admin() {
     setUsername('');
     setPassword('');
     setDisplay('');
+  }
+
+  const deleteUser = async (username) => {
+    if (!confirm(`Jeste li sigurni da želite obrisati korisnika "${username}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/user/${username}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        setUsers((prevUsers) => prevUsers.filter(user => user.username !== username));
+        alert('Korisnik obrisan uspješno');
+      } else {
+        alert('Greška pri brisanju korisnika');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Greška pri brisanju korisnika');
+    }
   }
 
   const startCountdown = (customSeconds = 30) => {
@@ -433,6 +456,27 @@ export default function Admin() {
     });
   };
 
+  const markAsUnread = async (questionId) => {
+    try {
+      const response = await fetch(`/api/questions/${questionId}/mark-unread`, {
+        method: 'POST'
+      });
+
+      if (response.ok) {
+        setReadQuestions((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(questionId);
+          return newSet;
+        });
+      } else {
+        alert('Greška pri označavanju pitanja kao neproitano');
+      }
+    } catch (error) {
+      console.error('Error marking question as unread:', error);
+      alert('Greška pri označavanju pitanja kao neproitano');
+    }
+  };
+
   const cancelEdit = () => {
     setEditingQuestion(null);
     setQuestionForm({ price: '', question: '', answer: '', double: false });
@@ -495,6 +539,24 @@ export default function Admin() {
         <input placeholder="Lozinka" type="password" value={password} onChange={e => setPassword(e.target.value)} />
         <input placeholder="Display ime" value={display} onChange={e => setDisplay(e.target.value)} />
         <button onClick={login}>Prijava novog korisnika</button>
+        
+        <h3 style={{marginTop: '20px'}}>Postojeći korisnici</h3>
+        <div className="users-list">
+          {users.map((user, index) => (
+            <div key={index} className="user-item">
+              <span>{user.username}</span>
+              {user.username !== 'admin' && user.username !== 'display' && (
+                <button 
+                  className="delete-user-btn" 
+                  onClick={() => deleteUser(user.username)}
+                  title="Obriši korisnika"
+                >
+                  🗑️
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
       {active !== 6 && (
         <div className="question-panel">
@@ -805,6 +867,9 @@ export default function Admin() {
                         <div className="question-header">
                           <span className="question-price">{question.price} bodova {question.double === 1 && '(2x)'}</span>
                           <div className="question-actions">
+                            {question.answered === 1 && (
+                              <button onClick={() => markAsUnread(question.id)} title="Označi kao neproitano">👁️</button>
+                            )}
                             <button onClick={() => editQuestion(question)}>✏️</button>
                             <button onClick={() => deleteQuestion(question.id)}>🗑️</button>
                           </div>
