@@ -45,6 +45,9 @@ app.use(cors({
   credentials: true
 }))
 
+createQuestionTable();
+createUserTable();
+
 app.get("/", (_, res) => {
   return res.status(200).send("OK!");
 })
